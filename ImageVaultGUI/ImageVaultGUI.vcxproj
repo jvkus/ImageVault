@@ -92,6 +92,9 @@
   <ItemGroup>
     <QtRcc Include="ImageVaultGUI.qrc" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ui_ImageVaultGUI.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
