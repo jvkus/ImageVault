@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageVaultGUI", "ImageVaultGUI\ImageVaultGUI.vcxproj", "{E8BB1617-1621-4437-B9B6-2E84B8F4FD5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8BB1617-1621-4437-B9B6-2E84B8F4FD5F}.Debug|x64.ActiveCfg = Debug|x64
+		{E8BB1617-1621-4437-B9B6-2E84B8F4FD5F}.Debug|x64.Build.0 = Debug|x64
+		{E8BB1617-1621-4437-B9B6-2E84B8F4FD5F}.Release|x64.ActiveCfg = Release|x64
+		{E8BB1617-1621-4437-B9B6-2E84B8F4FD5F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9085007D-0A8B-42C8-95C0-7347C347A233}
+	EndGlobalSection
+EndGlobal
