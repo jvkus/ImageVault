@@ -1,0 +1,10 @@
+// Version 1.1
+
+Current Status:
+- GUI superficially complete
+- Window resizing issue fixed
+- All (I think) signals and slots generated
+
+Needs:
+- Slight changes to improve appearance
+- All alction code for signals and slots

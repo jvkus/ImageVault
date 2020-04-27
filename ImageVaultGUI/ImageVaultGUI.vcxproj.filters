@@ -52,4 +52,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="VersionInfo.txt">
+      <Filter>Form Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
