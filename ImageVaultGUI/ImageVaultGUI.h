@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include <QtWidgets>
 #include "ui_ImageVaultGUI.h"
 
 class ImageVaultGUI : public QMainWindow
@@ -10,6 +10,12 @@ class ImageVaultGUI : public QMainWindow
 public:
 	ImageVaultGUI(QWidget *parent = Q_NULLPTR);
 
+private slots:
+	void loadFile();
+	void saveToFile();
+
 private:
 	Ui::ImageVaultGUIClass ui;
+	QAction *action_Open;	// change to work with menu
+	QAction *action_Save;	// change to work with menu
 };
