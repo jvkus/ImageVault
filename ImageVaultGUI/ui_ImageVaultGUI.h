@@ -1,19 +1,18 @@
 /********************************************************************************
-** Form generated from reading UI file 'ImageVaultGUINEXUIR.ui'
+** Form generated from reading UI file 'ImageVaultGUIBhuAja.ui'
 **
-** Created by: Qt User Interface Compiler version 5.12.0
+** Created by: Qt User Interface Compiler version 5.14.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef IMAGEVAULTGUINEXUIR_H
-#define IMAGEVAULTGUINEXUIR_H
+#ifndef IMAGEVAULTGUIBHUAJA_H
+#define IMAGEVAULTGUIBHUAJA_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -23,6 +22,7 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -63,11 +63,6 @@ public:
     QProgressBar *DecryptProgress;
     QSpacerItem *verticalSpacer_12;
     QSpacerItem *verticalSpacer;
-    QGridLayout *gridLayout;
-    QSpacerItem *verticalSpacer_10;
-    QGraphicsView *OpenImage;
-    QSpacerItem *horizontalSpacer_2;
-    QSpacerItem *horizontalSpacer;
     QSpacerItem *verticalSpacer_3;
     QVBoxLayout *verticalLayout_2;
     QRadioButton *EncryptRadio;
@@ -78,6 +73,13 @@ public:
     QSpacerItem *verticalSpacer_4;
     QSpacerItem *horizontalSpacer_6;
     QSpacerItem *verticalSpacer_11;
+    QGridLayout *gridLayout;
+    QSpacerItem *verticalSpacer_10;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents;
+    QLabel *imageLabel;
+    QSpacerItem *horizontalSpacer_2;
+    QSpacerItem *horizontalSpacer;
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu_Help;
@@ -146,7 +148,9 @@ public:
         palette.setBrush(QPalette::Active, QPalette::ToolTipText, brush);
         QBrush brush9(QColor(0, 0, 0, 128));
         brush9.setStyle(Qt::SolidPattern);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette::Active, QPalette::PlaceholderText, brush9);
+#endif
         palette.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
         palette.setBrush(QPalette::Inactive, QPalette::Button, brush1);
         palette.setBrush(QPalette::Inactive, QPalette::Light, brush2);
@@ -162,7 +166,9 @@ public:
         palette.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush7);
         palette.setBrush(QPalette::Inactive, QPalette::ToolTipBase, brush8);
         palette.setBrush(QPalette::Inactive, QPalette::ToolTipText, brush);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette::Inactive, QPalette::PlaceholderText, brush9);
+#endif
         palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush4);
         palette.setBrush(QPalette::Disabled, QPalette::Button, brush1);
         palette.setBrush(QPalette::Disabled, QPalette::Light, brush2);
@@ -178,7 +184,9 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush1);
         palette.setBrush(QPalette::Disabled, QPalette::ToolTipBase, brush8);
         palette.setBrush(QPalette::Disabled, QPalette::ToolTipText, brush);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette::Disabled, QPalette::PlaceholderText, brush9);
+#endif
         centralWidget->setPalette(palette);
         gridLayout_3 = new QGridLayout(centralWidget);
         gridLayout_3->setSpacing(6);
@@ -326,32 +334,6 @@ public:
 
         gridLayout_3->addItem(verticalSpacer, 2, 1, 1, 1);
 
-        gridLayout = new QGridLayout();
-        gridLayout->setSpacing(6);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        gridLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
-        verticalSpacer_10 = new QSpacerItem(20, 1, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        gridLayout->addItem(verticalSpacer_10, 1, 1, 1, 1);
-
-        OpenImage = new QGraphicsView(centralWidget);
-        OpenImage->setObjectName(QString::fromUtf8("OpenImage"));
-        sizePolicy.setHeightForWidth(OpenImage->sizePolicy().hasHeightForWidth());
-        OpenImage->setSizePolicy(sizePolicy);
-
-        gridLayout->addWidget(OpenImage, 0, 1, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(1, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_2, 0, 2, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(1, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 0, 0, 1, 1);
-
-
-        gridLayout_3->addLayout(gridLayout, 1, 2, 6, 1);
-
         verticalSpacer_3 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         gridLayout_3->addItem(verticalSpacer_3, 4, 1, 1, 1);
@@ -413,6 +395,50 @@ public:
 
         gridLayout_3->addItem(verticalSpacer_11, 7, 2, 1, 1);
 
+        gridLayout = new QGridLayout();
+        gridLayout->setSpacing(6);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
+        verticalSpacer_10 = new QSpacerItem(20, 1, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        gridLayout->addItem(verticalSpacer_10, 1, 2, 1, 1);
+
+        scrollArea = new QScrollArea(centralWidget);
+        scrollArea->setObjectName(QString::fromUtf8("scrollArea"));
+        scrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 746, 604));
+        imageLabel = new QLabel(scrollAreaWidgetContents);
+        imageLabel->setObjectName(QString::fromUtf8("imageLabel"));
+        imageLabel->setGeometry(QRect(50, 0, 671, 606));
+        QSizePolicy sizePolicy3(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(imageLabel->sizePolicy().hasHeightForWidth());
+        imageLabel->setSizePolicy(sizePolicy3);
+        imageLabel->setAutoFillBackground(true);
+        imageLabel->setFrameShape(QFrame::StyledPanel);
+        imageLabel->setFrameShadow(QFrame::Sunken);
+        imageLabel->setLineWidth(0);
+        imageLabel->setTextFormat(Qt::AutoText);
+        imageLabel->setScaledContents(true);
+        imageLabel->setMargin(5);
+        scrollArea->setWidget(scrollAreaWidgetContents);
+
+        gridLayout->addWidget(scrollArea, 0, 1, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(1, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_2, 0, 3, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(1, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer, 0, 0, 1, 1);
+
+
+        gridLayout_3->addLayout(gridLayout, 1, 2, 6, 1);
+
         ImageVaultGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ImageVaultGUIClass);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -442,34 +468,35 @@ public:
         QObject::connect(EncryptRadio, SIGNAL(toggled(bool)), DecryptEncryptButton, SLOT(update()));
         QObject::connect(DecryptRadio, SIGNAL(toggled(bool)), DecryptEncryptButton, SLOT(update()));
         QObject::connect(DecryptEncryptButton, SIGNAL(clicked()), DecryptProgress, SLOT(update()));
-        QObject::connect(DecryptEncryptButton, SIGNAL(clicked()), OpenImage, SLOT(update()));
         QObject::connect(pushButton, SIGNAL(clicked()), pushButton, SLOT(showMenu()));
         QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)), DecryptEncryptButton, SLOT(update()));
         QObject::connect(EncryptionKey, SIGNAL(returnPressed()), DecryptEncryptButton, SLOT(update()));
         QObject::connect(EncryptRadio, SIGNAL(toggled(bool)), pushButton, SLOT(update()));
         QObject::connect(DecryptRadio, SIGNAL(toggled(bool)), pushButton, SLOT(update()));
+        QObject::connect(actionExit, SIGNAL(triggered()), ImageVaultGUIClass, SLOT(close()));
 
         QMetaObject::connectSlotsByName(ImageVaultGUIClass);
     } // setupUi
 
     void retranslateUi(QMainWindow *ImageVaultGUIClass)
     {
-        ImageVaultGUIClass->setWindowTitle(QApplication::translate("ImageVaultGUIClass", "Image Vault", nullptr));
-        action_Image_Vault_Help->setText(QApplication::translate("ImageVaultGUIClass", "&Image Vault Help", nullptr));
-        action_Version->setText(QApplication::translate("ImageVaultGUIClass", "&Version", nullptr));
-        action_Open->setText(QApplication::translate("ImageVaultGUIClass", "&Open", nullptr));
-        action_Save->setText(QApplication::translate("ImageVaultGUIClass", "&Save", nullptr));
-        action_Save_As->setText(QApplication::translate("ImageVaultGUIClass", "&Save As", nullptr));
-        actionExit->setText(QApplication::translate("ImageVaultGUIClass", "&Exit", nullptr));
-        EncryptionKeyLabel->setText(QApplication::translate("ImageVaultGUIClass", "Encryption Key", nullptr));
-        AlgorithmSelectLabel->setText(QApplication::translate("ImageVaultGUIClass", "Encryption Algorithm", nullptr));
-        label->setText(QApplication::translate("ImageVaultGUIClass", "Progress", nullptr));
-        DecryptEncryptButton->setText(QApplication::translate("ImageVaultGUIClass", "Decrypt", nullptr));
-        EncryptRadio->setText(QApplication::translate("ImageVaultGUIClass", "Encrypt", nullptr));
-        DecryptRadio->setText(QApplication::translate("ImageVaultGUIClass", "Decrypt", nullptr));
-        pushButton->setText(QApplication::translate("ImageVaultGUIClass", "Enter Text", nullptr));
-        menu_File->setTitle(QApplication::translate("ImageVaultGUIClass", "&File", nullptr));
-        menu_Help->setTitle(QApplication::translate("ImageVaultGUIClass", "&Help", nullptr));
+        ImageVaultGUIClass->setWindowTitle(QCoreApplication::translate("ImageVaultGUIClass", "Image Vault", nullptr));
+        action_Image_Vault_Help->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Image Vault Help", nullptr));
+        action_Version->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Version", nullptr));
+        action_Open->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Open", nullptr));
+        action_Save->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save", nullptr));
+        action_Save_As->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save As", nullptr));
+        actionExit->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Exit", nullptr));
+        EncryptionKeyLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption Key", nullptr));
+        AlgorithmSelectLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption Algorithm", nullptr));
+        label->setText(QCoreApplication::translate("ImageVaultGUIClass", "Progress", nullptr));
+        DecryptEncryptButton->setText(QCoreApplication::translate("ImageVaultGUIClass", "Decrypt", nullptr));
+        EncryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encrypt", nullptr));
+        DecryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "Decrypt", nullptr));
+        pushButton->setText(QCoreApplication::translate("ImageVaultGUIClass", "Enter Text...", nullptr));
+        imageLabel->setText(QString());
+        menu_File->setTitle(QCoreApplication::translate("ImageVaultGUIClass", "&File", nullptr));
+        menu_Help->setTitle(QCoreApplication::translate("ImageVaultGUIClass", "&Help", nullptr));
     } // retranslateUi
 
 };
@@ -480,4 +507,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // IMAGEVAULTGUINEXUIR_H
+#endif // IMAGEVAULTGUIBHUAJA_H
