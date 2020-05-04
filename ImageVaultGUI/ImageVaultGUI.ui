@@ -772,6 +772,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="DecryptEncryptButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -790,7 +793,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Decrypt</string>
+         <string>Select Mode</string>
         </property>
        </widget>
       </item>
@@ -954,7 +957,10 @@
        <enum>QLayout::SetMaximumSize</enum>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="enterTextButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1048,6 +1054,22 @@
         </property>
        </spacer>
       </item>
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>1</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="0" column="1">
        <widget class="QScrollArea" name="scrollArea">
         <property name="widgetResizable">
@@ -1104,22 +1126,6 @@
          </widget>
         </widget>
        </widget>
-      </item>
-      <item row="0" column="3">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>1</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
       </item>
       <item row="0" column="0">
        <spacer name="horizontalSpacer">
@@ -1263,9 +1269,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>enterTextButton</sender>
    <signal>clicked()</signal>
-   <receiver>pushButton</receiver>
+   <receiver>enterTextButton</receiver>
    <slot>showMenu()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1313,7 +1319,7 @@
   <connection>
    <sender>EncryptRadio</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton</receiver>
+   <receiver>enterTextButton</receiver>
    <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1329,7 +1335,7 @@
   <connection>
    <sender>DecryptRadio</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButton</receiver>
+   <receiver>enterTextButton</receiver>
    <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">

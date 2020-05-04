@@ -1,12 +1,8 @@
-// Version 1.1
-// This is to make sure it is *finally* going to the correct branch
-// Final test of push to master.....
+// Status Update
 
-Current Status:
-- GUI superficially complete
-- Window resizing issue fixed
-- All (I think) signals and slots generated
+General encryption algorithm for least significant 2bits has been built.
+Unknown if it actually works, but it does not crash.
 
-Needs:
-- Slight changes to improve appearance
-- All alction code for signals and slots
+Corrrected some buttons to change labels and lock or unlock other functions as needed.
+
+Decryption still needs set up
