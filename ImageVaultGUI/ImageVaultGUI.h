@@ -26,7 +26,7 @@ private slots:
 private:
 	Ui::ImageVaultGUIClass ui;
 
-	int confirmationDialog(QString title, QString info);
+	int confirmationDialog(QString title, QString info);	// Currently unused
 
 	QAction *action_Open;
 	QAction *action_Save;
