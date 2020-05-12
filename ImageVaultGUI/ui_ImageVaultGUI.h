@@ -485,9 +485,9 @@ public:
 		ImageVaultGUIClass->setWindowTitle(QCoreApplication::translate("ImageVaultGUIClass", "Image Vault", nullptr));
 		action_Image_Vault_Help->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Image Vault Help", nullptr));
 		action_Version->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Version", nullptr));
-		action_Open->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Open", nullptr));
+		action_Open->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Open...", nullptr));
 		action_Save->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save", nullptr));
-		action_Save_As->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save As", nullptr));
+		action_Save_As->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save As...", nullptr));
 		actionExit->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Exit", nullptr));
 		EncryptionKeyLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption Key", nullptr));
 		AlgorithmSelectLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption Algorithm", nullptr));

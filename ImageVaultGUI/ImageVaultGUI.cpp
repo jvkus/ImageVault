@@ -5,10 +5,10 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 {
 	ui.setupUi(this);
 	connect(ui.action_Open, SIGNAL(triggered()), this, SLOT(loadFile()));
-	connect(ui.action_Save, SIGNAL(triggered()), this, SLOT(saveToTextFile()));
-	connect(ui.action_Save_As, SIGNAL(triggered()), this, SLOT(saveTextFile()));
+	connect(ui.action_Save, SIGNAL(triggered()), this, SLOT(saveImageFile()));
+	connect(ui.action_Save_As, SIGNAL(triggered()), this, SLOT(saveToImageFile()));
 	connect(ui.action_Image_Vault_Help, SIGNAL(triggered()), this, SLOT());	// TODO: Add slot function
-	connect(ui.action_Version, SIGNAL(triggered()), this, SLOT());	// TODO: Add slot function
+	connect(ui.action_Version, SIGNAL(triggered()), this, SLOT(about()));
 
 	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this,
 		SLOT(encryptDecryptFile()));	
@@ -20,15 +20,28 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 	ui.scrollArea->setVisible(false);
 }
 
-void ImageVaultGUI::loadFile() {	// CURRENTLY DOES NOTHING WITH INPUT DATA
-									// Will need to be hooked up to other functions
+// Made with reference to https://stackoverflow.com/questions/17191124/qdialog-with-ok-and-cancel-buttons
+int ImageVaultGUI::confirmationDialog(QString title, QString info) {
+	QMessageBox alertBox;
+	alertBox.setWindowTitle(title);
+	alertBox.setInformativeText(info);
+	alertBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	alertBox.setDefaultButton(QMessageBox::No);	// If the user hits enter quickly, the operation is
+												// cancelled by default
+	return alertBox.exec();
+}
+
+// Should only be used to load images
+void ImageVaultGUI::loadFile() {
 	// Brings up file browser
 	QString fileName = QFileDialog::getOpenFileName(this,
-		tr("what does this do"), "",
-		tr("PNG Files (*.png);;All Files (*)"));
+		tr("Open File"), "",
+		tr("Image Files (*.bmp, *.gif, *.jpeg, *.png);;All Files (*)"));
 
-	if (fileName.isEmpty())
+	if (fileName.isEmpty()) {
+		QMessageBox::information(this, tr("Error"), "No file name entered.");
 		return;
+	}
 	else {
 		QFile file(fileName);
 
@@ -45,44 +58,90 @@ void ImageVaultGUI::loadFile() {	// CURRENTLY DOES NOTHING WITH INPUT DATA
 	loadPreview(fileName);
 }
 
-// TODO: Add image file saving functions.
+void ImageVaultGUI::saveImageFile() {
+	QImageWriter writer(openedFileName);
+	if (openedFileName.isEmpty()) {	// If string has no characters
+		QMessageBox::information(this, tr("Error"), "No file name entered. [DEBUG: This should not happen!]");
+		return;
+	}
+	else {
+		QFile file(openedFileName);
+		if (!file.open(QIODevice::WriteOnly)) {	// If device is not open for writing
+			QMessageBox::information(this, tr("Could not open file for writing."),
+				file.errorString());
+			return;
+		}
+
+		writer.write(image);
+	}
+}
+
+void ImageVaultGUI::saveToImageFile() {
+	QString fileName = QFileDialog::getSaveFileName(this,
+		tr("Save File"), "",
+		tr("Image Files (*.bmp, *.gif, *.jpeg, *.png);;All Files (*)"));
+
+	QImageWriter writer(fileName);
+	if (fileName.isEmpty()) {
+		QMessageBox::information(this, tr("Error"), "Please enter a file name.");
+		return;
+	}
+	else {
+		QFile file(fileName);
+		if (!file.open(QIODevice::WriteOnly)) {	// If device could not be opened for writing
+			QMessageBox::information(this, tr("Could not open file for writing."),
+				file.errorString());
+			return;
+		}
+
+		writer.write(image);	// Write to file
+		return;
+	}
+}
 
 // Test to make sure this works.
 void ImageVaultGUI::saveTextFile() {
 	if (openedFileName.isEmpty()) {
-		// TODO: display error message HERE
+		QMessageBox::information(this, tr("Error"), "No file name entered. [DEBUG: This should not happen!]");
 		return;
 	}
 	else {
 		QFile file(openedFileName);
 		if (!file.open(QIODevice::WriteOnly)) {
-			QMessageBox::information(this, tr("Could not open file."),
+			QMessageBox::information(this, tr("Could not open file for writing."),
 				file.errorString());
 			return;
 		}
 
 		QDataStream out(&file);
+		out << decodedText;
+		file.close();
 	}
 	// finish function to actually save the file.
 }
 
 void ImageVaultGUI::saveToTextFile() {
+	// Gets save file name
 	QString fileName = QFileDialog::getSaveFileName(this,
-		tr("Save decrypted text"), "",
+		tr("Save Decrypted Text"), "",
 		tr("Text Files (*.txt);;All Files (*)"));
 
-	if (fileName.isEmpty())
+	if (fileName.isEmpty()) {
+		QMessageBox::information(this, tr("Error"), "Please enter a file name.");
 		return;
+	}
 	else {
 		QFile file(fileName);
-		if (!file.open(QIODevice::WriteOnly)) {
-			QMessageBox::information(this, tr("Could not open file."),
+		if (!file.open(QIODevice::WriteOnly)) {	// If device could not be opened for writing
+			QMessageBox::information(this, tr("Could not open file for writing."),
 				file.errorString());
 			return;
 		}
 
-		QDataStream out(&file);		// Creates datastream for outfile
-									// Currently does nothing with ostream
+		QDataStream out(&file);	// Write to file
+		out << decodedText;
+		file.close();
+		return;
 	}
 }
 
@@ -96,7 +155,6 @@ void ImageVaultGUI::showPreview(const QImage &imageName) {
 	scaleFactor = 1.0;
 
 	ui.scrollArea->setVisible(true);
-	// fitToWindowAct->setEnabled(true);
 	// updateActions();
 }
 
@@ -142,7 +200,7 @@ void ImageVaultGUI::encryptDecryptFile()
 		if (userText.isEmpty())
 		{
 			// Check for user input first
-			QMessageBox::information(this, tr("Error"), "Please enter text to be encrypted first.");
+			QMessageBox::information(this, tr("Error"), "Please enter text to encrypt first.");
 			return;
 		}
 		else
@@ -375,7 +433,7 @@ void ImageVaultGUI::encryptFile()
 	// Assemble the new data into an image
 	QImage tempImage(data, width, height, QImage::Format_RGB32);
 
-	// Copy over to encrypthedImage so it can be saved later
+	// Copy over to encryptedImage so it can be saved later
 	encryptedImage = tempImage;
 }
 
@@ -389,7 +447,7 @@ void ImageVaultGUI::enterText()
 {
 	bool ok;
 	QString text = QInputDialog::getMultiLineText(this, tr("Enter your message"),
-		tr("Your Secret Message"), "Enter your desired message here.", &ok);
+		tr("Your Secret Message"), "Enter your message here...", &ok);
 
 	if (ok && !text.isEmpty())
 	{
@@ -411,4 +469,11 @@ void ImageVaultGUI::decryptMode()
 	ui.DecryptEncryptButton->setText("Decrypt");
 	ui.DecryptEncryptButton->setEnabled(1);
 	ui.enterTextButton->setDisabled(1);
+}
+
+void ImageVaultGUI::about() {
+	QMessageBox::about(this, tr("About ImageVault"),
+		tr("<p>Version 1.0</p>"
+			"<p>Developed by Mike Livesey and Joanna Kus for "
+			"Elmhurst College CS 475, Spring 2020.</p>"));
 }
