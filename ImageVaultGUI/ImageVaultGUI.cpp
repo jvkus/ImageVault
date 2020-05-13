@@ -7,17 +7,19 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 	connect(ui.action_Open, SIGNAL(triggered()), this, SLOT(loadFile()));
 	connect(ui.action_Save, SIGNAL(triggered()), this, SLOT(saveImageFile()));
 	connect(ui.action_Save_As, SIGNAL(triggered()), this, SLOT(saveToImageFile()));
-	connect(ui.action_Image_Vault_Help, SIGNAL(triggered()), this, SLOT());	// TODO: Add slot function
+	// connect(ui.action_Image_Vault_Help, SIGNAL(triggered()), this, SLOT());	// TODO: Add slot function
 	connect(ui.action_Version, SIGNAL(triggered()), this, SLOT(about()));
 
-	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this,
-		SLOT(encryptDecryptFile()));	
+	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this, SLOT(encryptDecryptFile()));	
 
 	connect(ui.enterTextButton, SIGNAL(clicked()), this, SLOT(enterText()));
 	connect(ui.EncryptRadio, SIGNAL(toggled(bool)), this, SLOT(encryptMode()));
 	connect(ui.DecryptRadio, SIGNAL(toggled(bool)), this, SLOT(decryptMode()));
 
-	ui.scrollArea->setVisible(false);
+	ui.imageLabel->setVisible(false);
+	// TODO: Currently, these actions don't exist in the actual UI. Get some buttons going.
+	// connect(ui.action_Zoom_In, SIGNAL(triggered()), this, SLOT(zoomIn()));
+	// connect(ui.action_Zoom_Out, SIGNAL(triggered()), this, SLOT(zoomOut()));
 }
 
 // Made with reference to https://stackoverflow.com/questions/17191124/qdialog-with-ok-and-cancel-buttons
@@ -149,13 +151,15 @@ void ImageVaultGUI::saveToTextFile() {
 void ImageVaultGUI::showPreview(const QImage &imageName) {
 	image = imageName;
 
+	/*
 	if (imageName.colorSpace().isValid())
 		image.convertToColorSpace(QColorSpace::SRgb);	// COLORSPACE MAY BE IMPORTANT FOR ENCRYPTION PURPOSES
+	*/
+	
 	ui.imageLabel->setPixmap(QPixmap::fromImage(image));
 	scaleFactor = 1.0;
 
-	ui.scrollArea->setVisible(true);
-	// updateActions();
+	ui.imageLabel->setVisible(true);
 }
 
 // Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
@@ -171,8 +175,41 @@ void ImageVaultGUI::loadPreview(const QString &fileName) {	// loads image previe
 		return;
 	}
 
-	showPreview(imageFile);	// FIX
+	showPreview(imageFile);
 	setWindowFilePath(fileName);
+}
+
+// Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
+void ImageVaultGUI::adjustScrollbar(QScrollBar *scrollBar, double factor) {
+	//ui.scrollBar->setValue(int(factor * ui.scrollBar->value()
+	//							+ ((factor - 1) * ui.scrollBar->pageStep() / 2)));
+}
+
+// Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
+void ImageVaultGUI::scaleImage(double factor) {
+	Q_ASSERT(ui.imageLabel->pixmap());	// Assert that there is an image loaded in preview area
+	scaleFactor *= factor;				// Set scaling of image
+	ui.imageLabel->resize(scaleFactor * ui.imageLabel->pixmap()->size());	// Resize image preview
+
+	// Adjust scroll bars
+	// TODO: Add scroll bars to UI
+	// adjustScrollbar(ui.scrollArea->horizontalScrollBar(), factor);
+	// adjustScrollbar(ui.scrollArea->verticalScrollBar(), factor);
+
+	// Enable or disable zoom in/out based on out much the user has zoomed
+	// TODO: Once zoom functions are hooked up to UI, change these to work with the buttons 
+	action_Zoom_In->setEnabled(scaleFactor < 3.0);
+	action_Zoom_Out->setEnabled(scaleFactor > 0.33);
+}
+
+// Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
+void ImageVaultGUI::zoomIn() {
+	scaleImage(1.25);
+}
+
+// Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
+void ImageVaultGUI::zoomOut() {
+	scaleImage(0.8);
 }
 
 // change or remove params later
@@ -458,7 +495,8 @@ void ImageVaultGUI::enterText()
 void ImageVaultGUI::encryptMode()
 {
 	decrypt = false;
-	ui.DecryptEncryptButton->setText("Encrypt");
+	ui.DecryptRadio->setChecked(false);
+	ui.DecryptEncryptButton->setText("ENCRYPT FILE");
 	ui.DecryptEncryptButton->setEnabled(1);
 	ui.enterTextButton->setEnabled(1);
 }
@@ -466,7 +504,8 @@ void ImageVaultGUI::encryptMode()
 void ImageVaultGUI::decryptMode()
 {
 	decrypt = true;
-	ui.DecryptEncryptButton->setText("Decrypt");
+	ui.EncryptRadio->setChecked(false);
+	ui.DecryptEncryptButton->setText("DECRYPT FILE");
 	ui.DecryptEncryptButton->setEnabled(1);
 	ui.enterTextButton->setDisabled(1);
 }

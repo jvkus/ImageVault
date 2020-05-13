@@ -17,6 +17,8 @@ private slots:
 	void saveToImageFile();
 	void saveTextFile();	// for Save button
 	void saveToTextFile();	// for Save As button
+	void zoomIn();
+	void zoomOut();
 	void enterText();	// for text entry button
 	void encryptMode();	// Control application mode
 	void decryptMode();
@@ -31,15 +33,17 @@ private:
 	QAction *action_Open;
 	QAction *action_Save;
 	QAction *action_Save_As;
-
+	QAction *action_Zoom_In;	// TODO: Replace with zoom buttons
+	QAction *action_Zoom_Out;	// TODO: Replace with zoom buttons
+	
 	QPushButton *DecryptEncryptButton;	// Button you hit to initiate data encryption
 	QProgressBar *DecryptProgress;		// progress bar
 	QComboBox *comboBox;		// drop-down menu to pick encryption type
 	QLineEdit *EncryptionKey;	// field for typing in passkey
 	QPushButton *enterTextButton;	// Brings up text entry dialog
 
-	QRadioButton *EncryptRadio;	// Buttons to control mode of application
-	QRadioButton *DecryptRadio;
+	QPushButton *EncryptRadio;	// Buttons to control mode of application
+	QPushButton *DecryptRadio;
 
 	QImage image;
 	QString openedFileName;
@@ -61,4 +65,6 @@ private:
 
 	void showPreview(const QImage &imageName);
 	void loadPreview(const QString &fileName);
+	void scaleImage(double factor);
+	void adjustScrollbar(QScrollBar *scrollBar, double factor);
 };
