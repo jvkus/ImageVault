@@ -13,8 +13,8 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this, SLOT(encryptDecryptFile()));	
 
 	connect(ui.enterTextButton, SIGNAL(clicked()), this, SLOT(enterText()));
-	connect(ui.EncryptRadio, SIGNAL(toggled(bool)), this, SLOT(encryptMode()));
-	connect(ui.DecryptRadio, SIGNAL(toggled(bool)), this, SLOT(decryptMode()));
+	connect(ui.EncryptRadio, SIGNAL(clicked()), this, SLOT(encryptMode()));
+	connect(ui.DecryptRadio, SIGNAL(clicked()), this, SLOT(decryptMode()));
 
 	ui.imageLabel->setVisible(false);
 	// TODO: Currently, these actions don't exist in the actual UI. Get some buttons going.
@@ -34,6 +34,7 @@ int ImageVaultGUI::confirmationDialog(QString title, QString info) {
 }
 
 // Should only be used to load images
+// Error, fails to locate .bmp files when file type is not set to *all
 void ImageVaultGUI::loadFile() {
 	// Brings up file browser
 	QString fileName = QFileDialog::getOpenFileName(this,
@@ -60,6 +61,9 @@ void ImageVaultGUI::loadFile() {
 	loadPreview(fileName);
 }
 
+// Modified, should only write out the encrypted image
+// Need to prevent this function from being called if nothing has been encrypted
+// WARNING: This function will overwrite the source image. This is probably not ideal
 void ImageVaultGUI::saveImageFile() {
 	QImageWriter writer(openedFileName);
 	if (openedFileName.isEmpty()) {	// If string has no characters
@@ -74,10 +78,12 @@ void ImageVaultGUI::saveImageFile() {
 			return;
 		}
 
-		writer.write(image);
+		writer.write(encryptedImage);
 	}
 }
 
+// Modified, same as above
+// Error when saving, file type not selected correctly. Has to be manually entered
 void ImageVaultGUI::saveToImageFile() {
 	QString fileName = QFileDialog::getSaveFileName(this,
 		tr("Save File"), "",
@@ -96,7 +102,7 @@ void ImageVaultGUI::saveToImageFile() {
 			return;
 		}
 
-		writer.write(image);	// Write to file
+		writer.write(encryptedImage);	// Write to file
 		return;
 	}
 }
@@ -212,7 +218,8 @@ void ImageVaultGUI::zoomOut() {
 	scaleImage(0.8);
 }
 
-// change or remove params later
+// Calls sub functions to carry out encrypt or decrypt
+// This function DOES NOT modify the original image
 void ImageVaultGUI::encryptDecryptFile()
 {
 	// User must have an image loaded first
@@ -226,6 +233,12 @@ void ImageVaultGUI::encryptDecryptFile()
 	// Get the passkey
 	// Will attempt operation even if field is blank
 	passkey = ui.EncryptionKey->text();
+
+	ui.DecryptProgress->setValue(0);
+
+	// Delimiter
+	// Needs to be more complex...
+	passkey.append(' ');
 
 	// Call the correct function
 	if (decrypt)
@@ -256,7 +269,7 @@ void ImageVaultGUI::encryptFile()
 	}
 
 	// Ensure the pixel layout is known
-	// Auto set Alpha to max to prevent conversion problems later
+	// This is necessary for the algorithm to function correctly
 	image.convertToFormat(QImage::Format_RGB32);
 
 	// Information about the picture
@@ -266,6 +279,7 @@ void ImageVaultGUI::encryptFile()
 	int height = image.height();
 	int bytesPerLine = image.bytesPerLine();
 	int sizeInBytes = image.sizeInBytes();
+	
 
 	int passkeyLength = passkey.size();
 	int messageLength = userText.size();
@@ -277,21 +291,26 @@ void ImageVaultGUI::encryptFile()
 		passKeyUsed = true;
 	}
 
-	int blue = 3;
+	// BGR[A] internal memory format
+	int blue = 0;
 	int pixelWidth = 4;
 
 	int i = 0;
 
-	char tempPixel;
-	char modPixel;
+	unsigned char tempPixel;
+	unsigned char modPixel;
 
 	char tempChar;
 	char modChar;
 
 	// Get a pointer to the raw pixel data
+	// Note: Not really a pointer to the original pixel data
+	// This performs a deep copy of the originals pixel data and 
+	// produces a pointer to the copy
 	uchar * data = image.bits();
 
 	// This is where the method of encryption is determined
+	// Case statment would be better
 	if (method == leastSignificantBits)
 	{
 		// Insert header
@@ -357,6 +376,8 @@ void ImageVaultGUI::encryptFile()
 			}
 		}
 
+		ui.DecryptProgress->setValue(15);
+
 		// Insert passkey
 		if (passKeyUsed)
 		{
@@ -393,7 +414,7 @@ void ImageVaultGUI::encryptFile()
 				{
 					modChar = (tempChar & 0b00001100);
 
-					modChar = (tempChar >> 2);
+					modChar = (modChar >> 2);
 
 					modPixel += modChar;
 
@@ -407,76 +428,381 @@ void ImageVaultGUI::encryptFile()
 
 					data[(i * pixelWidth) + blue] = modPixel;
 				}
-				
+
 			}
 
 		}
-	}
 
-	// Insert the main message
-	// Make sure to run all the way through the message
-	// i starts at a higher value than zero
-	// Adjust end position
-	// Check to make sure message does not overrun space
-	int offset = (passkeyLength * 4) + 4;
-	for (i; i < (userText.size() * 4) + offset && i < sizeInBytes; i++)
-	{
-		tempPixel = data[(i * pixelWidth) + blue];
+		ui.DecryptProgress->setValue(35);
 
-		modPixel = (tempPixel & 0b11111100);
-
-
-		if (i % 4 == 0)
+		// Insert the main message
+		// Make sure to run all the way through the message
+		// i starts at a higher value than zero
+		// Adjust end position
+		// Check to make sure message does not overrun space
+		int offset = (passkeyLength * 4) + 4;
+		for (i; i < (userText.size() * 4) + offset && i < sizeInBytes; i++)
 		{
-			// Only get a new character once for every 4 passes
-			tempChar = userText[(i - offset) / 4].unicode();
+			tempPixel = data[(i * pixelWidth) + blue];
 
-			modChar = (tempChar >> 6);
+			modPixel = (tempPixel & 0b11111100);
 
-			modPixel += modChar;
 
-			data[(i * pixelWidth) + blue] = modPixel;
+			if (i % 4 == 0)
+			{
+				// Only get a new character once for every 4 passes
+				tempChar = userText[(i - offset) / 4].unicode();
+
+				modChar = (tempChar >> 6);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else if (i % 4 == 1)
+			{
+				modChar = (tempChar & 0b00110000);
+
+				modChar = (modChar >> 4);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else if (i % 4 == 2)
+			{
+				modChar = (tempChar & 0b00001100);
+
+				modChar = (modChar >> 2);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else
+			{
+				modChar = (tempChar & 0b00000011);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
 		}
-		else if (i % 4 == 1)
+
+		// New offset
+		offset = (passkeyLength * 4) + (userText.size() * 4) + 4;
+
+		ui.DecryptProgress->setValue(85);
+		
+		// Inset EOM for decryption
+		// Will need 4x as many pixels as the number of char
+		// Need 16 pixels, " EOM"
+
+		QString endOfMessage = " EOM ";
+
+		for (i; i < offset + 16; i++)
 		{
-			modChar = (tempChar & 0b00110000);
+			tempPixel = data[(i * pixelWidth) + blue];
 
-			modChar = (modChar >> 4);
+			modPixel = (tempPixel & 0b11111100);
 
-			modPixel += modChar;
 
-			data[(i * pixelWidth) + blue] = modPixel;
+			if (i % 4 == 0)
+			{
+				// Only get a new character once for every 4 passes
+				tempChar = endOfMessage[(i - offset) / 4].unicode();
+
+				modChar = (tempChar >> 6);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else if (i % 4 == 1)
+			{
+				modChar = (tempChar & 0b00110000);
+
+				modChar = (modChar >> 4);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else if (i % 4 == 2)
+			{
+				modChar = (tempChar & 0b00001100);
+
+				modChar = (tempChar >> 2);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+			else
+			{
+				modChar = (tempChar & 0b00000011);
+
+				modPixel += modChar;
+
+				data[(i * pixelWidth) + blue] = modPixel;
+			}
+
 		}
-		else if (i % 4 == 2)
-		{
-			modChar = (tempChar & 0b00001100);
 
-			modChar = (tempChar >> 2);
+		ui.DecryptProgress->setValue(95);
 
-			modPixel += modChar;
-
-			data[(i * pixelWidth) + blue] = modPixel;
-		}
-		else
-		{
-			modChar = (tempChar & 0b00000011);
-
-			modPixel += modChar;
-
-			data[(i * pixelWidth) + blue] = modPixel;
-		}
+		
 	}
 
 	// Assemble the new data into an image
-	QImage tempImage(data, width, height, QImage::Format_RGB32);
+	QImage tempImage(data, width, height, bytesPerLine, QImage::Format_RGB32);
 
 	// Copy over to encryptedImage so it can be saved later
 	encryptedImage = tempImage;
+
+	ui.DecryptProgress->setValue(100);
 }
 
 void ImageVaultGUI::decryptFile()
 {
+	if (method == leastSignificantBits)
+	{
+		// Ensure the pixel layout is known
+		// Auto set Alpha to max to prevent conversion problems later
+		image.convertToFormat(QImage::Format_RGB32);
+
+		// Information about the picture
+		// Used to construct a final image later
+		// Also used to perform action on pixels
+		int width = image.width();
+		int height = image.height();
+		int bytesPerLine = image.bytesPerLine();
+		int sizeInBytes = image.sizeInBytes();
+
+		// Internal format of memory BGR[A]
+		int blue = 0;
+		int pixelWidth = 4;
+
+		int i = 0;
+
+		unsigned char tempPixel;
+		unsigned char modPixel;
+
+		char modChar = ' ';
+
+		// Zero out this character
+		modChar = (modChar & 0b00000000);
+
+		QString decodedMessage;
+		QString decodedWord;
+
+		// Get a pointer to the raw pixel data
+		uchar * data = image.bits();
+
+		QVector<int> mode(4,0);
+
+		// Obtain header
+		// 1323 = Encrypted no passkey
+		// 3112 = Encrypted with passkey
+		for (i; i < 4; i++)
+		{
+			tempPixel = data[(i * pixelWidth) + blue];
+
+			modPixel = (tempPixel & 0b00000011);
+
+			if (i == 0)
+			{
+				mode[i] = (int)modPixel;
+			}
+			else if (i == 1)
+			{
+				mode[i] = (int)modPixel;
+			}
+			else if (i == 2)
+			{
+				mode[i] = (int)modPixel;
+			}
+			else
+			{
+				mode[i] = (int)modPixel;
+			}
+		}
+
+		ui.DecryptProgress->setValue(15);
+
+		bool validHeader;
+		bool passKeyUsed;
+
+		QVector<int> modeNoPasskey{ 1,3,2,3 };
+		QVector<int> modePasskey{ 3,1,1,2 };
+
+		if (mode == modeNoPasskey)
+		{
+			validHeader = true;
+			passKeyUsed = false;
+		}
+		else if (mode == modePasskey)
+		{
+			validHeader = true;
+			passKeyUsed = true;
+		}
+		else
+		{
+			validHeader = false;
+		}
+
+		// The header is corrupt, incorrect type, or this is not an incoded image
+		if (!validHeader)
+		{
+			QMessageBox::warning(this, tr("Serious Error"), "File header missing or corrupted.");
+			return;
+		}
+
+		int passkeyLength = passkey.size();
+
+		// Check if the user entered an unnecessary passkey
+		if (passkeyLength > 0 && !(passKeyUsed))
+		{
+			QMessageBox::warning(this, tr("Warning"), "This file does not have passkey protection.");
+		}
+
+
+		// Decode and check the passkey if necessary
+		if (passKeyUsed)
+		{
+			// Delimits end of password
+			bool STOP = false;
+
+			// Will need 4x as many pixels as the number of char
+			for (i; !(STOP) && (i < (passkeyLength * 4) + 4); i++)
+			{
+				tempPixel = data[(i * pixelWidth) + blue];
+
+				modPixel = (tempPixel & 0b00000011);
+
+
+				if (i % 4 == 0)
+				{
+					modChar += (modPixel << 6);
+				}
+				else if (i % 4 == 1)
+				{
+					modChar += (modPixel << 4);
+				}
+				else if (i % 4 == 2)
+				{
+					modChar += (modPixel << 2);
+				}
+				else
+				{
+					modChar += modPixel;
+
+					if (modChar == ' ')
+					{
+						STOP = true;
+					}
+
+					// Push the char onto a string
+					decodedWord.append(modChar);
+
+					// Reset the character
+					modChar = (modChar & 0b00000000);
+				}
+
+			}
+
+			if (decodedWord != passkey || decodedWord.isEmpty() || !(STOP))
+			{
+				QMessageBox::warning(this, tr("Error"), "Passkey does not match.");
+				return;
+			}
+			else
+			{
+				// Reset the word to decode text
+				decodedWord.clear();
+			}
+
+		}
+
+		ui.DecryptProgress->setValue(50);
+
+		// Decode the actual message
+		// Will need 4x as many pixels as the number of char
+
+		bool EOM = false;
+
+		for (i; !(EOM) && (i < sizeInBytes - 4); i++)
+		{
+			tempPixel = data[(i * pixelWidth) + blue];
+
+			modPixel = (tempPixel & 0b00000011);
+
+			if (i % 4 == 0)
+			{
+				modChar += (modPixel << 6);
+			}
+			else if (i % 4 == 1)
+			{
+				modChar += (modPixel << 4);
+			}
+			else if (i % 4 == 2)
+			{
+				modChar += (modPixel << 2);
+			}
+			else
+			{
+				modChar += modPixel;
+
+				// Push the char onto a string
+				if (modChar != ' ')
+				{
+					decodedWord.append(modChar);
+				}
+
+				// Is ths a complete word?
+				if (modChar == ' ')
+				{
+					decodedMessage.append(decodedWord);
+
+					// Clear for next word
+					decodedWord.clear();
+
+					// Append the blank to the front of the next word
+					decodedWord.append(modChar);
+				}
+
+				// Check if EOM signal recieved
+				// The last space beyond EOM is only a delimiter
+				if (decodedWord == " EOM")
+				{
+					EOM = true;
+				}
+
+				// Reset the character
+				modChar = (modChar & 0b00000000);
+			}
+
+			ui.DecryptProgress->setValue(95);
+
+		}
+
+		// Make the text available to the program
+		decodedText = decodedMessage;
+
+		ui.DecryptProgress->setValue(100);
+
+		showText();
+	}
 	
+}
+
+// Displays the decoded message
+// TEMPORARY DISPLAY METHOD
+// FIX TO MAKE PROPER OUTPUT
+void ImageVaultGUI::showText()
+{
+	bool ok;
+	QInputDialog::getMultiLineText(this, tr("Decoded Message"), tr("Text"), decodedText, &ok);
 }
 
 // Created with ref to https://doc.qt.io/qt-5/qinputdialog.html#getMultiLineText
@@ -495,6 +821,7 @@ void ImageVaultGUI::enterText()
 void ImageVaultGUI::encryptMode()
 {
 	decrypt = false;
+	ui.DecryptProgress->setValue(0);
 	ui.DecryptRadio->setChecked(false);
 	ui.DecryptEncryptButton->setText("ENCRYPT FILE");
 	ui.DecryptEncryptButton->setEnabled(1);
@@ -504,6 +831,7 @@ void ImageVaultGUI::encryptMode()
 void ImageVaultGUI::decryptMode()
 {
 	decrypt = true;
+	ui.DecryptProgress->setValue(0);
 	ui.EncryptRadio->setChecked(false);
 	ui.DecryptEncryptButton->setText("DECRYPT FILE");
 	ui.DecryptEncryptButton->setEnabled(1);

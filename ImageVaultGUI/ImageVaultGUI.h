@@ -62,6 +62,7 @@ private:
 
 	void encryptFile();
 	void decryptFile();
+	void showText();
 
 	void showPreview(const QImage &imageName);
 	void loadPreview(const QString &fileName);

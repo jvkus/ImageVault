@@ -1,8 +1,26 @@
 // Status Update
 
 General encryption algorithm for least significant 2bits has been built.
-Unknown if it actually works, but it does not crash.
 
-Corrrected some buttons to change labels and lock or unlock other functions as needed.
+Basic encryption / Decryption complete
+Basic progress bar complete
 
-Decryption still needs set up
+// Manual test operations
+**************************************************
+Password protection tests PASSED
+No password protection tests PASSED
+File formt .PNG tests PASSED
+All warnings test PASSED
+General save test FAILED
+General load test PASSED
+**************************************************
+
+// In progress
+Needs:
+Repair to save and load functions
+Implement the encryption method selector
+Help button actions
+
+Could add:
+Better functions for encryption
+Better output box for text data

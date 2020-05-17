@@ -544,7 +544,7 @@ public:
         DecryptProgress->setSizePolicy(sizePolicy2);
         DecryptProgress->setMaximumSize(QSize(300, 16777215));
         DecryptProgress->setFont(font);
-        DecryptProgress->setValue(24);
+        DecryptProgress->setValue(0);
         DecryptProgress->setAlignment(Qt::AlignCenter);
         DecryptProgress->setTextVisible(true);
         DecryptProgress->setOrientation(Qt::Horizontal);
