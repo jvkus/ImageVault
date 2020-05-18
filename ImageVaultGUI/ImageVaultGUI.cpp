@@ -63,7 +63,7 @@ void ImageVaultGUI::loadFile() {
 	// Brings up file browser
 	QString fileName = QFileDialog::getOpenFileName(this,
 		tr("Open File"), "",
-		tr("Image Files (*.bmp, *.gif, *.jpeg, *.png);;All Files (*)"));
+		tr("Image Files (*.bmp *.gif *.jpeg *.png);;All Files (*)"));
 
 	if (fileName.isEmpty()) {
 		QMessageBox::information(this, tr("Error"), "No file name entered.");
@@ -111,7 +111,7 @@ void ImageVaultGUI::saveImageFile() {
 void ImageVaultGUI::saveToImageFile() {
 	QString fileName = QFileDialog::getSaveFileName(this,
 		tr("Save File"), "",
-		tr("Image Files (*.bmp, *.gif, *.jpeg, *.png);;All Files (*)"));
+		tr("Image Files (*.bmp *.gif *.jpeg *.png);;All Files (*)"));
 
 	QImageWriter writer(fileName);
 	if (fileName.isEmpty()) {
