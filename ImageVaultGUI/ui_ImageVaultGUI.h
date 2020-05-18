@@ -1,25 +1,27 @@
 /********************************************************************************
-** Form generated from reading UI file 'ImageVaultGUImZdrNV.ui'
+** Form generated from reading UI file 'ImageVaultGUIdIFMQi.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.14.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef IMAGEVAULTGUIMZDRNV_H
-#define IMAGEVAULTGUIMZDRNV_H
+#ifndef IMAGEVAULTGUIDIFMQI_H
+#define IMAGEVAULTGUIDIFMQI_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGraphicsEffect>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QScrollArea>
@@ -50,7 +52,8 @@ public:
     QVBoxLayout *verticalLayout_2;
     QPushButton *EncryptRadio;
     QPushButton *DecryptRadio;
-    QVBoxLayout *verticalLayout_3;
+    QFrame *userInteractSpace;
+    QVBoxLayout *userSettingSpace;
     QVBoxLayout *verticalLayout;
     QLabel *EncryptionKeyLabel;
     QLineEdit *EncryptionKey;
@@ -62,21 +65,22 @@ public:
     QSpacerItem *verticalSpacer_7;
     QFrame *line_2;
     QSpacerItem *verticalSpacer_3;
-    QPushButton *enterTextButton;
+    QLabel *EnterTextLabel;
+    QPlainTextEdit *plainTextEdit;
     QSpacerItem *verticalSpacer_8;
-    QSpacerItem *verticalSpacer_4;
     QVBoxLayout *verticalLayout_5;
     QPushButton *DecryptEncryptButton;
     QSpacerItem *verticalSpacer_6;
-    QLabel *label;
+    QLabel *ProgressLabel;
     QProgressBar *DecryptProgress;
     QSpacerItem *verticalSpacer_12;
     QSpacerItem *verticalSpacer_5;
-    QFrame *line_3;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu_Help;
+	QGraphicsDropShadowEffect *ButtonGlow;
+	QGraphicsOpacityEffect *NoEffect;
 
     void setupUi(QMainWindow *ImageVaultGUIClass)
     {
@@ -93,12 +97,13 @@ public:
 "	color: #eaeaea;\n"
 "	background-color: #000015;\n"
 "	selection-color: #eaeaea;\n"
-"	selection-background-color: #f77411;\n"
-"	font: 24pt \"Source Sans Pro\";\n"
+"	selection-background-color: #f71174;\n"
+"	font: \"Source Sans Pro\";\n"
 "}\n"
 "QMenuBar {\n"
 "	color: #5b5b80;\n"
 "	background-color: #11111e;\n"
+"	font: 24pt \"Source Sans Pro\";\n"
 "}\n"
 "QMenuBar::item {\n"
 "	padding: 10px 40px;\n"
@@ -112,7 +117,6 @@ public:
 "	color: #b5b5ff;\n"
 "	background-color: #11111e;\n"
 "	font: 63 14pt \"Source Sans Pro Semibold\";\n"
-"	letter-spacing: 5px;\n"
 "}\n"
 "QMenu::item {\n"
 "	border-top: 1px solid #171725;\n"
@@ -125,15 +129,24 @@ public:
 "	color: #d7d7d9;\n"
 "	background-color: #26264d;\n"
 "}\n"
-"QFrame#sidebar {\n"
-"	background-color: #101033;\n"
-"	color: #ff0000;\n"
+"QFrame {\n"
+"	background-color: #10101d;\n"
+"}\n"
+"QFrame#userInteractSpace {\n"
+"	padding: 10px 20px;\n"
+"}\n"
+"#line, #line_2 {\n"
+"	background: transparent; \n"
+"	border-top: 1px solid #000015;\n"
 "}\n"
 "QLabel {\n"
-"	color: #5454b3;\n"
+"	color: #ccccff;\n"
 "	background: transparent;\n"
-"	font: 63 18pt \"Source Sans Pro\";"
-                        "\n"
+"	font: 18pt \"Source Sans Pro\";\n"
+"	padding-bottom: 10px;\n"
+"}\n"
+"QLabel:disabled {\n"
+"	color: #363659;\n"
 "}\n"
 "QRadioButton {\n"
 "	color: #eaeaea;\n"
@@ -141,29 +154,23 @@ public:
 "	padding-left: 5px;\n"
 "	background: transparent;\n"
 "}\n"
-"QLineEdit {\n"
+"QLineEdit, QPlainTextEdit, QComboBox {\n"
 "	font: 16pt;\n"
 "	color: #ccccff;\n"
+"	background-color: #000015;\n"
 "	border: 1px solid #363659;\n"
 "	padding-left: 5px;\n"
 "	padding-right: 5px;\n"
 "}\n"
-"QLineEdit:!editable {\n"
+"QLineEdit:disabled, QPlainTextEdit:disabled, QComboBox:disabled {\n"
 "	color: #363659;\n"
-"	background-color: #040414;\n"
+"	background-color: #101024;\n"
 "}\n"
-"QLineEdit:focus {\n"
-"	border: 1px solid #18e8a6;\n"
+"QPlainTextEdit {\n"
+"	padding: 3px 5px;\n"
+"	font: 14pt \"Source Sans Pro Semibold\";\n"
 "}\n"
-"QComboBox {\n"
-"	color: #ccccff;\n"
-"	border: 1px solid #363659;\n"
-"}\n"
-"QComboBox:!editable {\n"
-"	color: #363659;\n"
-"	background-color: #040414;\n"
-"}\n"
-"QComboBox:selected {\n"
+"QLineEdit:focus, QPlainTextEdit:focus, QComboBox:selected {\n"
 "	border: 1px solid #18e8a6;\n"
 "}\n"
 "QPushButton {\n"
@@ -172,23 +179,95 @@ public:
 "	border-top: 2px solid #000015;\n"
 "	padding: 20px;\n"
 "}\n"
+"QPushButton#DecryptRadio {\n"
+"	border-bottom: 2px solid #00"
+                        "0015;\n"
+"}\n"
 "QPushButton:pressed, QPushButton:checked {\n"
 "	color: #ccccff;\n"
 "	background-color: #3c3c80\n"
 "}\n"
+"QPushButton#DecryptEncryptButton {\n"
+"	border: 0;\n"
+"	color: #181834;\n"
+"	background-color: #18e8a6;\n"
+"	font: 63 22pt \"Source Sans Pro Semibold\";\n"
+"	padding: 15px 20px;\n"
+"}\n"
+"QPushButton#DecryptEncryptButton:!enabled {\n"
+"	color: #11111e;\n"
+"	background-color: #363659;\n"
+"}\n"
 "QProgressBar {\n"
-"	border: 3px solid #000015;\n"
+"	border: 1px solid #000015;\n"
+"	font: 14pt \"Source Sans Pro Semibold\";\n"
 "}\n"
 "QProgressBar::chunk {\n"
-"	background-color: #00ffe7;\n"
+"	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 132, 255), stop:1 rgba(255, 0, 90, 255));\n"
 "}\n"
 "QScrollArea {\n"
-"	bord"
-                        "er: none;\n"
+"	border: none;\n"
 "}\n"
 "QStatusBar {\n"
 "	background-color: #101033;\n"
-"}"));
+"	border-top: 1px solid #000015;\n"
+"}"
+"QScrollBar:horizontal, QScrollBar:vertical{\n"
+"	border : 0; \n"
+"	background: #000015; \n"
+"}\n"
+"QScrollBar:horizontal{ \n"
+"	height: 18px; \n"
+"	margin: 0px 18px; \n"
+"}\n"
+"QScrollBar:vertical{ \n"
+"	width: 18px; \n"
+"	margin: 18px 0px; \n"
+"}\n"
+"QScrollBar::handle:horizontal, QScrollBar::handle:vertical{ \n"
+"	background: #191934; \n"
+"	border-radius: 9px; \n"
+"}\n"
+"QScrollBar::handle:horizontal{ \n"
+"	min-width: 18px; \n"
+"}\n"
+"QScrollBar::handle:vertical{ \n"
+"	min-height: 18px; \n"
+"}\n"
+"QScrollBar::add-line:vertical{ \n"
+"	height: 18px; \n"
+"	subcontrol-position: bottom; \n"
+"	subcontrol-origin: margin; \n"
+"}\n"
+"QScrollBar::sub-line:vertical{ \n"
+"	height: 18px; \n"
+"	subcontrol-position: top; \n"
+"	subcontrol-origin: margin; \n"
+"}\n"
+"QScrollBar::add-line:horizontal{ \n"
+"	width: 18px; \n"
+"	subcontrol-position: right; \n"
+"	subcontrol-origin: margin; \n"
+"}\n"
+"QScrollBar::sub-line:horizontal{ \n"
+"	width: 18px; \n"
+"	subcontrol-position: left; \n"
+"	subcontrol-origin: margin; \n"
+"}\n"
+"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical, QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal{ \n"
+"	border : 0; \n"
+"	border-radius: 9px; \n"
+"	background: #191934; \n"
+"}\n"
+"QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal, QScrollBar::down-arrow:vertical, QScrollBar::up-arrow:vertical{ \n"
+"	background: #000015; \n"
+"	width: 6px; \n"
+"	height: 6px; \n"
+"	border-radius: 3px; \n"
+"}\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal, QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical{ \n"
+"	background: none; \n"
+"}\n"));
         action_Image_Vault_Help = new QAction(ImageVaultGUIClass);
         action_Image_Vault_Help->setObjectName(QString::fromUtf8("action_Image_Vault_Help"));
         action_Version = new QAction(ImageVaultGUIClass);
@@ -293,7 +372,6 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::PlaceholderText, brush11);
 #endif
         centralWidget->setPalette(palette);
-        centralWidget->setStyleSheet(QString::fromUtf8(""));
         gridLayout_3 = new QGridLayout(centralWidget);
         gridLayout_3->setSpacing(0);
         gridLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -313,10 +391,10 @@ public:
         scrollArea->setAlignment(Qt::AlignCenter);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1071, 759));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 998, 784));
         imageLabel = new QLabel(scrollAreaWidgetContents);
         imageLabel->setObjectName(QString::fromUtf8("imageLabel"));
-        imageLabel->setGeometry(QRect(320, 170, 441, 401));
+        imageLabel->setGeometry(QRect(310, 170, 800, 800));
         QSizePolicy sizePolicy1(QSizePolicy::Ignored, QSizePolicy::Ignored);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -329,6 +407,8 @@ public:
         imageLabel->setTextFormat(Qt::AutoText);
         imageLabel->setScaledContents(true);
         imageLabel->setMargin(5);
+		imageLabel->setMinimumWidth(400);
+		imageLabel->setVisible(false);
         scrollArea->setWidget(scrollAreaWidgetContents);
 
         previewArea->addWidget(scrollArea, 0, 0, 1, 1);
@@ -359,14 +439,14 @@ public:
         sizePolicy2.setHeightForWidth(EncryptRadio->sizePolicy().hasHeightForWidth());
         EncryptRadio->setSizePolicy(sizePolicy2);
         EncryptRadio->setMaximumSize(QSize(300, 16777215));
-        QFont font;
-        font.setFamily(QString::fromUtf8("Source Sans Pro"));
-        font.setPointSize(24);
-        font.setBold(false);
-        font.setItalic(false);
-        font.setWeight(50);
-        EncryptRadio->setFont(font);
-        EncryptRadio->setStyleSheet(QString::fromUtf8(""));
+        QFont radioFont;
+        radioFont.setFamily(QString::fromUtf8("Source Sans Pro"));
+        radioFont.setPointSize(24);
+        radioFont.setBold(false);
+        radioFont.setItalic(false);
+        radioFont.setWeight(50);
+		radioFont.setLetterSpacing(QFont::AbsoluteSpacing, 5);
+        EncryptRadio->setFont(radioFont);
         EncryptRadio->setCheckable(true);
 
         verticalLayout_2->addWidget(EncryptRadio);
@@ -377,7 +457,7 @@ public:
         sizePolicy2.setHeightForWidth(DecryptRadio->sizePolicy().hasHeightForWidth());
         DecryptRadio->setSizePolicy(sizePolicy2);
         DecryptRadio->setMaximumSize(QSize(300, 16777215));
-        DecryptRadio->setFont(font);
+        DecryptRadio->setFont(radioFont);
         DecryptRadio->setCheckable(true);
 
         verticalLayout_2->addWidget(DecryptRadio);
@@ -385,171 +465,214 @@ public:
 
         sideBar->addLayout(verticalLayout_2);
 
-        verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setSpacing(0);
-        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
-        verticalLayout_3->setSizeConstraint(QLayout::SetMaximumSize);
-        verticalLayout_3->setContentsMargins(0, -1, 0, -1);
+        userInteractSpace = new QFrame(sidebar);
+        userInteractSpace->setObjectName(QString::fromUtf8("userInteractSpace"));
+        userSettingSpace = new QVBoxLayout(userInteractSpace);
+        userSettingSpace->setSpacing(0);
+        userSettingSpace->setContentsMargins(11, 11, 11, 11);
+        userSettingSpace->setObjectName(QString::fromUtf8("userSettingSpace"));
+        userSettingSpace->setSizeConstraint(QLayout::SetMaximumSize);
+        userSettingSpace->setContentsMargins(1, -1, 1, -1);
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMaximumSize);
         verticalLayout->setContentsMargins(-1, 0, -1, 0);
-        EncryptionKeyLabel = new QLabel(sidebar);
+        EncryptionKeyLabel = new QLabel(userInteractSpace);
         EncryptionKeyLabel->setObjectName(QString::fromUtf8("EncryptionKeyLabel"));
+        EncryptionKeyLabel->setEnabled(false);
         QSizePolicy sizePolicy3(QSizePolicy::Maximum, QSizePolicy::Preferred);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(EncryptionKeyLabel->sizePolicy().hasHeightForWidth());
         EncryptionKeyLabel->setSizePolicy(sizePolicy3);
         EncryptionKeyLabel->setMaximumSize(QSize(300, 16777215));
-        QFont font1;
-        font1.setFamily(QString::fromUtf8("Source Sans Pro"));
-        font1.setPointSize(18);
-        font1.setBold(false);
-        font1.setItalic(false);
-        font1.setWeight(7);
-        EncryptionKeyLabel->setFont(font1);
+        QFont labelFont;
+        labelFont.setFamily(QString::fromUtf8("Source Sans Pro"));
+        labelFont.setPointSize(18);
+        labelFont.setBold(false);
+        labelFont.setItalic(false);
+        labelFont.setWeight(50);
+		labelFont.setLetterSpacing(QFont::AbsoluteSpacing, 1);
+        EncryptionKeyLabel->setFont(labelFont);
         EncryptionKeyLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-        EncryptionKeyLabel->setMargin(2);
+        EncryptionKeyLabel->setMargin(0);
+        EncryptionKeyLabel->setIndent(0);
 
         verticalLayout->addWidget(EncryptionKeyLabel);
 
-        EncryptionKey = new QLineEdit(sidebar);
+        EncryptionKey = new QLineEdit(userInteractSpace);
         EncryptionKey->setObjectName(QString::fromUtf8("EncryptionKey"));
+        EncryptionKey->setEnabled(false);
         sizePolicy3.setHeightForWidth(EncryptionKey->sizePolicy().hasHeightForWidth());
         EncryptionKey->setSizePolicy(sizePolicy3);
         EncryptionKey->setMaximumSize(QSize(300, 16777215));
-        QFont font2;
-        font2.setFamily(QString::fromUtf8("Source Sans Pro"));
-        font2.setPointSize(16);
-        font2.setBold(false);
-        font2.setItalic(false);
-        font2.setWeight(50);
-        EncryptionKey->setFont(font2);
-        EncryptionKey->setStyleSheet(QString::fromUtf8(""));
+        QFont keyFont;
+        keyFont.setFamily(QString::fromUtf8("Source Sans Pro"));
+        keyFont.setPointSize(16);
+        keyFont.setBold(false);
+        keyFont.setItalic(false);
+        keyFont.setWeight(50);
+        EncryptionKey->setFont(keyFont);
         EncryptionKey->setEchoMode(QLineEdit::Password);
+        EncryptionKey->setReadOnly(false);
 
         verticalLayout->addWidget(EncryptionKey);
 
-        verticalSpacer = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer);
 
-        line = new QFrame(sidebar);
+        line = new QFrame(userInteractSpace);
         line->setObjectName(QString::fromUtf8("line"));
         line->setFrameShadow(QFrame::Plain);
+        line->setLineWidth(0);
         line->setFrameShape(QFrame::HLine);
 
         verticalLayout->addWidget(line);
 
-        verticalSpacer_2 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_2 = new QSpacerItem(20, 15, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_2);
 
-        AlgorithmSelectLabel = new QLabel(sidebar);
+        AlgorithmSelectLabel = new QLabel(userInteractSpace);
         AlgorithmSelectLabel->setObjectName(QString::fromUtf8("AlgorithmSelectLabel"));
+        AlgorithmSelectLabel->setEnabled(false);
         sizePolicy3.setHeightForWidth(AlgorithmSelectLabel->sizePolicy().hasHeightForWidth());
         AlgorithmSelectLabel->setSizePolicy(sizePolicy3);
         AlgorithmSelectLabel->setMaximumSize(QSize(300, 16777215));
-        AlgorithmSelectLabel->setFont(font1);
-        AlgorithmSelectLabel->setStyleSheet(QString::fromUtf8(""));
+        AlgorithmSelectLabel->setFont(labelFont);
         AlgorithmSelectLabel->setScaledContents(false);
         AlgorithmSelectLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-        AlgorithmSelectLabel->setMargin(2);
+        AlgorithmSelectLabel->setMargin(0);
+        AlgorithmSelectLabel->setIndent(0);
 
         verticalLayout->addWidget(AlgorithmSelectLabel);
 
-        comboBox = new QComboBox(sidebar);
+        comboBox = new QComboBox(userInteractSpace);
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
+        comboBox->setEnabled(false);
         sizePolicy3.setHeightForWidth(comboBox->sizePolicy().hasHeightForWidth());
         comboBox->setSizePolicy(sizePolicy3);
         comboBox->setMaximumSize(QSize(300, 16777215));
-        comboBox->setFont(font);
+        comboBox->setFont(keyFont);
+        comboBox->setEditable(false);
 
         verticalLayout->addWidget(comboBox);
 
-        verticalSpacer_7 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_7 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_7);
 
-        line_2 = new QFrame(sidebar);
+        line_2 = new QFrame(userInteractSpace);
         line_2->setObjectName(QString::fromUtf8("line_2"));
+		line_2->setFrameShadow(QFrame::Plain);
+        line_2->setLineWidth(0);
         line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
 
         verticalLayout->addWidget(line_2);
 
-        verticalSpacer_3 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_3 = new QSpacerItem(20, 15, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_3);
 
-        enterTextButton = new QPushButton(sidebar);
-        enterTextButton->setObjectName(QString::fromUtf8("enterTextButton"));
-        enterTextButton->setEnabled(false);
-        sizePolicy2.setHeightForWidth(enterTextButton->sizePolicy().hasHeightForWidth());
-        enterTextButton->setSizePolicy(sizePolicy2);
-        enterTextButton->setMaximumSize(QSize(300, 16777215));
-        enterTextButton->setFont(font);
-        enterTextButton->setFlat(false);
+        EnterTextLabel = new QLabel(userInteractSpace);
+        EnterTextLabel->setObjectName(QString::fromUtf8("EnterTextLabel"));
+        EnterTextLabel->setEnabled(false);
+        EnterTextLabel->setFont(labelFont);
+        EnterTextLabel->setCursor(QCursor(Qt::ArrowCursor));
+        EnterTextLabel->setIndent(0);
 
-        verticalLayout->addWidget(enterTextButton);
+        verticalLayout->addWidget(EnterTextLabel);
+
+        plainTextEdit = new QPlainTextEdit(userInteractSpace);
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        plainTextEdit->setEnabled(false);
+        QSizePolicy sizePolicy5(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
+        plainTextEdit->setSizePolicy(sizePolicy5);
+        plainTextEdit->setReadOnly(false);
+
+        verticalLayout->addWidget(plainTextEdit);
 
         verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_8);
 
-
-        verticalLayout_3->addLayout(verticalLayout);
-
-        verticalSpacer_4 = new QSpacerItem(170, 0, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout_3->addItem(verticalSpacer_4);
-
-
-        sideBar->addLayout(verticalLayout_3);
+        userSettingSpace->addLayout(verticalLayout);
 
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(0);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         verticalLayout_5->setContentsMargins(-1, 0, -1, -1);
-        DecryptEncryptButton = new QPushButton(sidebar);
+        DecryptEncryptButton = new QPushButton(userInteractSpace);
         DecryptEncryptButton->setObjectName(QString::fromUtf8("DecryptEncryptButton"));
         DecryptEncryptButton->setEnabled(false);
         sizePolicy2.setHeightForWidth(DecryptEncryptButton->sizePolicy().hasHeightForWidth());
         DecryptEncryptButton->setSizePolicy(sizePolicy2);
         DecryptEncryptButton->setMaximumSize(QSize(300, 16777215));
-        DecryptEncryptButton->setFont(font);
+        QFont submitFont;
+        submitFont.setFamily(QString::fromUtf8("Source Sans Pro Semibold"));
+        submitFont.setPointSize(22);
+        submitFont.setBold(false);
+        submitFont.setItalic(false);
+        submitFont.setWeight(7);
+		submitFont.setLetterSpacing(QFont::AbsoluteSpacing, 2);
+        DecryptEncryptButton->setFont(submitFont);
         DecryptEncryptButton->setFlat(false);
+		DecryptEncryptButton->setVisible(false);
+
+		ButtonGlow = new QGraphicsDropShadowEffect();
+		ButtonGlow->setBlurRadius(10);
+		ButtonGlow->setOffset(0, 0);
+		ButtonGlow->setColor(QColor(24, 232, 166));
+
+		NoEffect = new QGraphicsOpacityEffect();
+		NoEffect->setOpacity(1);
+
+		DecryptEncryptButton->setGraphicsEffect(NoEffect);
 
         verticalLayout_5->addWidget(DecryptEncryptButton);
 
-        verticalSpacer_6 = new QSpacerItem(170, 5, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_6 = new QSpacerItem(170, 15, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_5->addItem(verticalSpacer_6);
 
-        label = new QLabel(sidebar);
-        label->setObjectName(QString::fromUtf8("label"));
-        sizePolicy3.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy3);
-        label->setMaximumSize(QSize(300, 16777215));
-        label->setFont(font1);
-        label->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        ProgressLabel = new QLabel(userInteractSpace);
+        ProgressLabel->setObjectName(QString::fromUtf8("ProgressLabel"));
+        ProgressLabel->setEnabled(false);
+        sizePolicy3.setHeightForWidth(ProgressLabel->sizePolicy().hasHeightForWidth());
+        ProgressLabel->setSizePolicy(sizePolicy3);
+        ProgressLabel->setMaximumSize(QSize(300, 16777215));
+        ProgressLabel->setFont(labelFont);
+        ProgressLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        ProgressLabel->setMargin(0);
+        ProgressLabel->setIndent(0);
+		ProgressLabel->setVisible(false);
 
-        verticalLayout_5->addWidget(label);
+        verticalLayout_5->addWidget(ProgressLabel);
 
-        DecryptProgress = new QProgressBar(sidebar);
+        DecryptProgress = new QProgressBar(userInteractSpace);
         DecryptProgress->setObjectName(QString::fromUtf8("DecryptProgress"));
         sizePolicy2.setHeightForWidth(DecryptProgress->sizePolicy().hasHeightForWidth());
         DecryptProgress->setSizePolicy(sizePolicy2);
         DecryptProgress->setMaximumSize(QSize(300, 16777215));
-        DecryptProgress->setFont(font);
+        QFont progressFont;
+        progressFont.setFamily(QString::fromUtf8("Source Sans Pro Semibold"));
+        progressFont.setPointSize(14);
+        progressFont.setBold(false);
+        progressFont.setItalic(false);
+        progressFont.setWeight(50);
+        DecryptProgress->setFont(progressFont);
         DecryptProgress->setValue(0);
         DecryptProgress->setAlignment(Qt::AlignCenter);
-        DecryptProgress->setTextVisible(true);
+        DecryptProgress->setTextVisible(false);
         DecryptProgress->setOrientation(Qt::Horizontal);
         DecryptProgress->setInvertedAppearance(false);
         DecryptProgress->setTextDirection(QProgressBar::TopToBottom);
+		DecryptProgress->setVisible(false);
 
         verticalLayout_5->addWidget(DecryptProgress);
 
@@ -562,17 +685,13 @@ public:
         verticalLayout_5->addItem(verticalSpacer_5);
 
 
-        sideBar->addLayout(verticalLayout_5);
+        userSettingSpace->addLayout(verticalLayout_5);
+
+
+        sideBar->addWidget(userInteractSpace);
 
 
         gridLayout_3->addWidget(sidebar, 1, 0, 1, 1);
-
-        line_3 = new QFrame(centralWidget);
-        line_3->setObjectName(QString::fromUtf8("line_3"));
-        line_3->setFrameShadow(QFrame::Plain);
-        line_3->setFrameShape(QFrame::HLine);
-
-        gridLayout_3->addWidget(line_3, 2, 0, 1, 1);
 
         ImageVaultGUIClass->setCentralWidget(centralWidget);
         statusBar = new QStatusBar(ImageVaultGUIClass);
@@ -601,13 +720,13 @@ public:
 
         retranslateUi(ImageVaultGUIClass);
         QObject::connect(actionExit, SIGNAL(triggered()), ImageVaultGUIClass, SLOT(close()));
-        QObject::connect(DecryptEncryptButton, SIGNAL(clicked()), DecryptProgress, SLOT(update()));
 
         QMetaObject::connectSlotsByName(ImageVaultGUIClass);
     } // setupUi
 
     void retranslateUi(QMainWindow *ImageVaultGUIClass)
     {
+		// ImageVaultGUIClass->setWindowFlags(Qt::FramelessWindowHint);		Line that removes the frame for fun.
         ImageVaultGUIClass->setWindowTitle(QCoreApplication::translate("ImageVaultGUIClass", "Image Vault", nullptr));
         action_Image_Vault_Help->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Image Vault Help", nullptr));
         action_Version->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Version", nullptr));
@@ -616,13 +735,14 @@ public:
         action_Save_As->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Save As...", nullptr));
         actionExit->setText(QCoreApplication::translate("ImageVaultGUIClass", "&Exit", nullptr));
         imageLabel->setText(QString());
-        EncryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "E N C R Y P T", nullptr));
-        DecryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "D E C R Y P T", nullptr));
+        EncryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "ENCRYPT", nullptr));
+        DecryptRadio->setText(QCoreApplication::translate("ImageVaultGUIClass", "DECRYPT", nullptr));
         EncryptionKeyLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption key", nullptr));
         AlgorithmSelectLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Encryption algorithm", nullptr));
-        enterTextButton->setText(QCoreApplication::translate("ImageVaultGUIClass", "Enter Text...", nullptr));
+        EnterTextLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Enter text", nullptr));
+        plainTextEdit->setPlaceholderText(QCoreApplication::translate("ImageVaultGUIClass", "Start typing...", nullptr));
         DecryptEncryptButton->setText(QCoreApplication::translate("ImageVaultGUIClass", "ENCRYPT FILE", nullptr));
-        label->setText(QCoreApplication::translate("ImageVaultGUIClass", "Progress", nullptr));
+        ProgressLabel->setText(QCoreApplication::translate("ImageVaultGUIClass", "Progress", nullptr));
         menu_File->setTitle(QCoreApplication::translate("ImageVaultGUIClass", "&F I L E", nullptr));
         menu_Help->setTitle(QCoreApplication::translate("ImageVaultGUIClass", "&H E L P", nullptr));
     } // retranslateUi
@@ -635,4 +755,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // IMAGEVAULTGUIMZDRNV_H
+#endif // IMAGEVAULTGUIDIFMQI_H

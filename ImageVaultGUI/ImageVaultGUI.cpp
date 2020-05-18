@@ -12,11 +12,10 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 
 	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this, SLOT(encryptDecryptFile()));	
 
-	connect(ui.enterTextButton, SIGNAL(clicked()), this, SLOT(enterText()));
 	connect(ui.EncryptRadio, SIGNAL(clicked()), this, SLOT(encryptMode()));
 	connect(ui.DecryptRadio, SIGNAL(clicked()), this, SLOT(decryptMode()));
 
-	ui.imageLabel->setVisible(false);
+	connect(this, SIGNAL(focusChanged()), this, SLOT(test()));
 	// TODO: Currently, these actions don't exist in the actual UI. Get some buttons going.
 	// connect(ui.action_Zoom_In, SIGNAL(triggered()), this, SLOT(zoomIn()));
 	// connect(ui.action_Zoom_Out, SIGNAL(triggered()), this, SLOT(zoomOut()));
@@ -31,6 +30,31 @@ int ImageVaultGUI::confirmationDialog(QString title, QString info) {
 	alertBox.setDefaultButton(QMessageBox::No);	// If the user hits enter quickly, the operation is
 												// cancelled by default
 	return alertBox.exec();
+}
+
+void ImageVaultGUI::enableUI() {
+	if (!uiEnabled) {
+		uiEnabled = true;
+		ui.sidebar->setStyleSheet("QFrame#userInteractSpace { background-color: #191934; }"	// Brighten sidebar background
+			"#DecryptRadio, #EncryptRadio  { color: #5b5b80; background-color: #11111e; }" // Darken unselected radio button
+			"#DecryptRadio:checked,  #EncryptRadio:checked { color: #ccccff; background-color: #3c3c80; }");	
+			
+		for (auto&& child : ui.sidebar->findChildren<QLabel *>()) {	// Enable all QLabel children
+			child->setEnabled(true);
+		}
+
+		// Enable the fields that the user will use to interact with the program
+		ui.EncryptionKey->setEnabled(true);
+		ui.comboBox->setEnabled(true);
+		ui.plainTextEdit->setEnabled(true);
+		ui.DecryptEncryptButton->setEnabled(true);
+		// ui.DecryptEncryptButton->setGraphicsEffect(ui.ButtonGlow);	// Adds glow to the button
+
+		// Make button and progress bar visible
+		ui.DecryptEncryptButton->setVisible(true);
+		ui.ProgressLabel->setVisible(true);
+		ui.DecryptProgress->setVisible(true);
+	}
 }
 
 // Should only be used to load images
@@ -124,8 +148,8 @@ void ImageVaultGUI::saveTextFile() {
 		QDataStream out(&file);
 		out << decodedText;
 		file.close();
+		return;
 	}
-	// finish function to actually save the file.
 }
 
 void ImageVaultGUI::saveToTextFile() {
@@ -161,8 +185,9 @@ void ImageVaultGUI::showPreview(const QImage &imageName) {
 	if (imageName.colorSpace().isValid())
 		image.convertToColorSpace(QColorSpace::SRgb);	// COLORSPACE MAY BE IMPORTANT FOR ENCRYPTION PURPOSES
 	*/
-	
+
 	ui.imageLabel->setPixmap(QPixmap::fromImage(image));
+	ui.imageLabel->adjustSize();
 	scaleFactor = 1.0;
 
 	ui.imageLabel->setVisible(true);
@@ -187,8 +212,8 @@ void ImageVaultGUI::loadPreview(const QString &fileName) {	// loads image previe
 
 // Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
 void ImageVaultGUI::adjustScrollbar(QScrollBar *scrollBar, double factor) {
-	//ui.scrollBar->setValue(int(factor * ui.scrollBar->value()
-	//							+ ((factor - 1) * ui.scrollBar->pageStep() / 2)));
+	scrollBar->setValue(int(factor * scrollBar->value()
+								+ ((factor - 1) * scrollBar->pageStep() / 2)));
 }
 
 // Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
@@ -198,14 +223,13 @@ void ImageVaultGUI::scaleImage(double factor) {
 	ui.imageLabel->resize(scaleFactor * ui.imageLabel->pixmap()->size());	// Resize image preview
 
 	// Adjust scroll bars
-	// TODO: Add scroll bars to UI
-	// adjustScrollbar(ui.scrollArea->horizontalScrollBar(), factor);
-	// adjustScrollbar(ui.scrollArea->verticalScrollBar(), factor);
+	adjustScrollbar(ui.scrollArea->horizontalScrollBar(), factor);
+	adjustScrollbar(ui.scrollArea->verticalScrollBar(), factor);
 
 	// Enable or disable zoom in/out based on out much the user has zoomed
 	// TODO: Once zoom functions are hooked up to UI, change these to work with the buttons 
-	action_Zoom_In->setEnabled(scaleFactor < 3.0);
-	action_Zoom_Out->setEnabled(scaleFactor > 0.33);
+	// ui.action_Zoom_In->setEnabled(scaleFactor < 3.0);
+	// ui.action_Zoom_Out->setEnabled(scaleFactor > 0.33);
 }
 
 // Created with reference to Image Viewer example https://doc.qt.io/qt-5/qtwidgets-widgets-imageviewer-example.html
@@ -222,6 +246,13 @@ void ImageVaultGUI::zoomOut() {
 // This function DOES NOT modify the original image
 void ImageVaultGUI::encryptDecryptFile()
 {
+	ui.DecryptEncryptButton->setEnabled(false);	// Disable encrypt/decrypt button while function is running
+	ui.DecryptProgress->setTextVisible(true);
+
+	// This line causes access violation errors when active.
+	// Not sure how to fix it, so it'll be commented out.
+	// ui.DecryptEncryptButton->setGraphicsEffect(ui.NoEffect);
+	
 	// User must have an image loaded first
 	// More advanced future use will open the image load dialog for user
 	if (image.isNull())
@@ -233,6 +264,8 @@ void ImageVaultGUI::encryptDecryptFile()
 	// Get the passkey
 	// Will attempt operation even if field is blank
 	passkey = ui.EncryptionKey->text();
+
+	userText = ui.plainTextEdit->toPlainText();
 
 	ui.DecryptProgress->setValue(0);
 
@@ -250,7 +283,7 @@ void ImageVaultGUI::encryptDecryptFile()
 		if (userText.isEmpty())
 		{
 			// Check for user input first
-			QMessageBox::information(this, tr("Error"), "Please enter text to encrypt first.");
+			QMessageBox::information(this, tr("Error"), "Please enter text to encrypt.");
 			return;
 		}
 		else
@@ -259,6 +292,8 @@ void ImageVaultGUI::encryptDecryptFile()
 		}
 	}
 
+	ui.DecryptEncryptButton->setEnabled(true);	// Reenable encrypt/decrypt button
+	// ui.DecryptEncryptButton->setGraphicsEffect(ui.ButtonGlow);
 }
 
 void ImageVaultGUI::encryptFile()
@@ -806,6 +841,7 @@ void ImageVaultGUI::showText()
 }
 
 // Created with ref to https://doc.qt.io/qt-5/qinputdialog.html#getMultiLineText
+/*
 void ImageVaultGUI::enterText()
 {
 	bool ok;
@@ -817,25 +853,30 @@ void ImageVaultGUI::enterText()
 		userText = text;
 	}
 }
+*/
 
 void ImageVaultGUI::encryptMode()
 {
+	enableUI();
 	decrypt = false;
 	ui.DecryptProgress->setValue(0);
+	ui.DecryptProgress->setTextVisible(false);
 	ui.DecryptRadio->setChecked(false);
+	ui.EnterTextLabel->setEnabled(true);
+	ui.plainTextEdit->setEnabled(true);
 	ui.DecryptEncryptButton->setText("ENCRYPT FILE");
-	ui.DecryptEncryptButton->setEnabled(1);
-	ui.enterTextButton->setEnabled(1);
 }
 
 void ImageVaultGUI::decryptMode()
 {
+	enableUI();
 	decrypt = true;
 	ui.DecryptProgress->setValue(0);
+	ui.DecryptProgress->setTextVisible(false);
 	ui.EncryptRadio->setChecked(false);
+	ui.EnterTextLabel->setEnabled(false);
+	ui.plainTextEdit->setEnabled(false);
 	ui.DecryptEncryptButton->setText("DECRYPT FILE");
-	ui.DecryptEncryptButton->setEnabled(1);
-	ui.enterTextButton->setDisabled(1);
 }
 
 void ImageVaultGUI::about() {
@@ -843,4 +884,8 @@ void ImageVaultGUI::about() {
 		tr("<p>Version 1.0</p>"
 			"<p>Developed by Mike Livesey and Joanna Kus for "
 			"Elmhurst College CS 475, Spring 2020.</p>"));
+}
+
+void ImageVaultGUI::test() {
+	
 }

@@ -26,11 +26,12 @@
 	background-color: #000015;
 	selection-color: #eaeaea;
 	selection-background-color: #f77411;
-	font: 24pt &quot;Source Sans Pro&quot;;
+	font: &quot;Source Sans Pro&quot;;
 }
 QMenuBar {
 	color: #5b5b80;
 	background-color: #11111e;
+	font: 24pt &quot;Source Sans Pro&quot;;
 }
 QMenuBar::item {
 	padding: 10px 40px;
@@ -44,7 +45,6 @@ QMenu {
 	color: #b5b5ff;
 	background-color: #11111e;
 	font: 63 14pt &quot;Source Sans Pro Semibold&quot;;
-	letter-spacing: 5px;
 }
 QMenu::item {
 	border-top: 1px solid #171725;
@@ -57,14 +57,23 @@ QMenu::item:selected {
 	color: #d7d7d9;
 	background-color: #26264d;
 }
-QFrame#sidebar {
-	background-color: #101033;
-	color: #ff0000;
+QFrame {
+	background-color: #10101d;
+}
+QFrame#userInteractSpace {
+	padding: 10px 20px;
+}
+#line, #line_2 {
+	background-color: #000015;
 }
 QLabel {
 	color: #5454b3;
 	background: transparent;
-	font: 63 18pt &quot;Source Sans Pro&quot;;
+	font: 18pt &quot;Source Sans Pro&quot;;
+	padding-bottom: 10px;
+}
+QLabel:disabled {
+	color: #363659;
 }
 QRadioButton {
 	color: #eaeaea;
@@ -72,29 +81,23 @@ QRadioButton {
 	padding-left: 5px;
 	background: transparent;
 }
-QLineEdit {
+QLineEdit, QPlainTextEdit, QComboBox {
 	font: 16pt;
 	color: #ccccff;
+	background-color: #000015;
 	border: 1px solid #363659;
 	padding-left: 5px;
 	padding-right: 5px;
 }
-QLineEdit:!editable {
+QLineEdit:disabled, QPlainTextEdit:disabled, QComboBox:disabled {
 	color: #363659;
 	background-color: #040414;
 }
-QLineEdit:focus {
-	border: 1px solid #18e8a6;
+QPlainTextEdit {
+	padding: 3px 5px;
+	font: 14pt &quot;Source Sans Pro Semibold&quot;;
 }
-QComboBox {
-	color: #ccccff;
-	border: 1px solid #363659;
-}
-QComboBox:!editable {
-	color: #363659;
-	background-color: #040414;
-}
-QComboBox:selected {
+QLineEdit:focus, QPlainTextEdit:focus, QComboBox:selected {
 	border: 1px solid #18e8a6;
 }
 QPushButton {
@@ -103,21 +106,37 @@ QPushButton {
 	border-top: 2px solid #000015;
 	padding: 20px;
 }
+QPushButton#DecryptRadio {
+	border-bottom: 2px solid #000015;
+}
 QPushButton:pressed, QPushButton:checked {
 	color: #ccccff;
 	background-color: #3c3c80
 }
+QPushButton#DecryptEncryptButton {
+	border: 0;
+	color: #181834;
+	background-color: #18e8a6;
+	font: 63 22pt &quot;Source Sans Pro Semibold&quot;;
+	padding: 15px 20px;
+}
+QPushButton#DecryptEncryptButton:!enabled {
+	color: #11111e;
+	background-color: #363659;
+}
 QProgressBar {
-	border: 3px solid #000015;
+	border: 1px solid #000015;
+	font: 14pt &quot;Source Sans Pro Semibold&quot;;
 }
 QProgressBar::chunk {
-	background-color: #00ffe7;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 132, 255), stop:1 rgba(255, 0, 90, 255));
 }
 QScrollArea {
 	border: none;
 }
 QStatusBar {
 	background-color: #101033;
+	border-top: 1px solid #000015;
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -624,7 +643,62 @@ QStatusBar {
     </palette>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">QScrollBar:horizontal, QScrollBar:vertical {
+	border: 0;
+	background: #000015;
+}
+QScrollBar:horizontal {
+	height: 18px;
+	margin: 0px 18px;
+}
+QScrollBar:vertical {
+	width: 18px;
+	margin: 18px 0px;
+}
+QScrollBar::handle:horizontal, QScrollBar::handle:vertical {
+	background: #191934;
+	border-radius: 9px;
+}
+QScrollBar::handle:horizontal {
+	min-width: 18px;
+}
+QScrollBar::handle:vertical {
+	min-height: 18px;
+}
+QScrollBar::add-line:vertical {
+	height: 18px;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+	height: 18px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:horizontal {
+	width: 18px;
+	subcontrol-position: right;
+	subcontrol-origin: margin;
+}
+QScrollBar::sub-line:horizontal {
+	width: 18px;
+	subcontrol-position: left;
+	subcontrol-origin: margin;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical, QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+	border: 0;
+	border-radius: 9px;
+	background: #191934;
+}
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal, QScrollBar::down-arrow:vertical, QScrollBar::up-arrow:vertical {
+	background: #000015;
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal, QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
+}</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_3">
     <property name="leftMargin">
@@ -642,88 +716,6 @@ QStatusBar {
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="1" rowspan="4">
-     <layout class="QGridLayout" name="previewArea" rowstretch="0" columnstretch="0,0">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="midLineWidth">
-         <number>0</number>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>1071</width>
-           <height>759</height>
-          </rect>
-         </property>
-         <widget class="QLabel" name="imageLabel">
-          <property name="geometry">
-           <rect>
-            <x>320</x>
-            <y>170</y>
-            <width>441</width>
-            <height>401</height>
-           </rect>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="lineWidth">
-           <number>0</number>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::AutoText</enum>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-          <property name="margin">
-           <number>5</number>
-          </property>
-         </widget>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="1" column="0">
      <widget class="QFrame" name="sidebar">
       <property name="frameShape">
@@ -833,492 +825,634 @@ QStatusBar {
         </layout>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="sizeConstraint">
-          <enum>QLayout::SetMaximumSize</enum>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="sizeConstraint">
-            <enum>QLayout::SetMaximumSize</enum>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="EncryptionKeyLabel">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Source Sans Pro</family>
-               <pointsize>18</pointsize>
-               <weight>7</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Encryption key</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-             <property name="margin">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="EncryptionKey">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Source Sans Pro</family>
-               <pointsize>16</pointsize>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="echoMode">
-              <enum>QLineEdit::Password</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="Line" name="line">
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="AlgorithmSelectLabel">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Source Sans Pro</family>
-               <pointsize>18</pointsize>
-               <weight>7</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>Encryption algorithm</string>
-             </property>
-             <property name="scaledContents">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-             <property name="margin">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Source Sans Pro</family>
-               <pointsize>24</pointsize>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_7">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>10</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="enterTextButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>300</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Source Sans Pro</family>
-               <pointsize>24</pointsize>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Enter Text...</string>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_8">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>170</width>
-             <height>0</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="DecryptEncryptButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Source Sans Pro</family>
-             <pointsize>24</pointsize>
-             <weight>50</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>ENCRYPT FILE</string>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>170</width>
-             <height>5</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Source Sans Pro</family>
-             <pointsize>18</pointsize>
-             <weight>7</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Progress</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QProgressBar" name="DecryptProgress">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>300</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Source Sans Pro</family>
-             <pointsize>24</pointsize>
-             <weight>50</weight>
-             <italic>false</italic>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="value">
-            <number>24</number>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="textVisible">
-            <bool>true</bool>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="invertedAppearance">
-            <bool>false</bool>
-           </property>
-           <property name="textDirection">
-            <enum>QProgressBar::TopToBottom</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_12">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>30</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <spacer name="verticalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>50</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <widget class="QFrame" name="userInteractSpace">
+         <layout class="QVBoxLayout" name="userSettingSpace">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMaximumSize</enum>
+          </property>
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMaximumSize</enum>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="EncryptionKeyLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Encryption key</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="EncryptionKey">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>16</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="midLineWidth">
+               <number>0</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>15</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="AlgorithmSelectLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>Encryption algorithm</string>
+              </property>
+              <property name="scaledContents">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="comboBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>16</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="editable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="Line" name="line_2">
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>15</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="EnterTextLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+                <underline>false</underline>
+                <stylestrategy>PreferDefault</stylestrategy>
+                <kerning>true</kerning>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>ArrowCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Enter text</string>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPlainTextEdit" name="plainTextEdit">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Start typing...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="DecryptEncryptButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro Semibold</family>
+                <pointsize>22</pointsize>
+                <weight>7</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>ENCRYPT FILE</string>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>170</width>
+                <height>15</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="ProgressLabel">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro</family>
+                <pointsize>18</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Progress</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QProgressBar" name="DecryptProgress">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Source Sans Pro Semibold</family>
+                <pointsize>14</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="textVisible">
+               <bool>false</bool>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="textDirection">
+               <enum>QProgressBar::TopToBottom</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_12">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>30</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>50</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="Line" name="line_3">
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
+    <item row="0" column="1" rowspan="3">
+     <layout class="QGridLayout" name="previewArea" rowstretch="0,0" columnstretch="0,0">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
       </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+      <property name="spacing">
+       <number>0</number>
       </property>
-     </widget>
+      <item row="0" column="0">
+       <widget class="QScrollBar" name="verticalScrollBar">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="midLineWidth">
+         <number>0</number>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>980</width>
+           <height>766</height>
+          </rect>
+         </property>
+         <widget class="QLabel" name="imageLabel">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>170</y>
+            <width>441</width>
+            <height>401</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="margin">
+           <number>5</number>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QScrollBar" name="horizontalScrollBar">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -1410,22 +1544,6 @@ QStatusBar {
     <hint type="destinationlabel">
      <x>494</x>
      <y>349</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>DecryptEncryptButton</sender>
-   <signal>clicked()</signal>
-   <receiver>DecryptProgress</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>98</x>
-     <y>402</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>99</x>
-     <y>484</y>
     </hint>
    </hints>
   </connection>

@@ -11,7 +11,6 @@ public:
 	ImageVaultGUI(QWidget *parent = Q_NULLPTR);
 
 private slots:
-	
 	void loadFile();	// for Open button
 	void saveImageFile();
 	void saveToImageFile();
@@ -19,36 +18,22 @@ private slots:
 	void saveToTextFile();	// for Save As button
 	void zoomIn();
 	void zoomOut();
-	void enterText();	// for text entry button
 	void encryptMode();	// Control application mode
 	void decryptMode();
 	void encryptDecryptFile();
 	void about();
+	void test();
 
 private:
 	Ui::ImageVaultGUIClass ui;
 
 	int confirmationDialog(QString title, QString info);	// Currently unused
 
-	QAction *action_Open;
-	QAction *action_Save;
-	QAction *action_Save_As;
-	QAction *action_Zoom_In;	// TODO: Replace with zoom buttons
-	QAction *action_Zoom_Out;	// TODO: Replace with zoom buttons
-	
-	QPushButton *DecryptEncryptButton;	// Button you hit to initiate data encryption
-	QProgressBar *DecryptProgress;		// progress bar
-	QComboBox *comboBox;		// drop-down menu to pick encryption type
-	QLineEdit *EncryptionKey;	// field for typing in passkey
-	QPushButton *enterTextButton;	// Brings up text entry dialog
-
-	QPushButton *EncryptRadio;	// Buttons to control mode of application
-	QPushButton *DecryptRadio;
+	bool uiEnabled = false;
+	void enableUI();		// Enables the sidebar
 
 	QImage image;
 	QString openedFileName;
-	QLabel *imageLabel;
-	QScrollArea *scrollArea;
 	double scaleFactor = 1;		// For scaling the image
 
 	QString userText;	// Used to hold user input text
