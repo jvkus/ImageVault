@@ -22,6 +22,7 @@ private slots:
 	void decryptMode();
 	void encryptDecryptFile();
 	void about();
+	void help();
 	void test();
 
 private:

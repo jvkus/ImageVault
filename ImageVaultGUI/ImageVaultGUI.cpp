@@ -7,7 +7,7 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 	connect(ui.action_Open, SIGNAL(triggered()), this, SLOT(loadFile()));
 	connect(ui.action_Save, SIGNAL(triggered()), this, SLOT(saveImageFile()));
 	connect(ui.action_Save_As, SIGNAL(triggered()), this, SLOT(saveToImageFile()));
-	// connect(ui.action_Image_Vault_Help, SIGNAL(triggered()), this, SLOT());	// TODO: Add slot function
+	connect(ui.action_Image_Vault_Help, SIGNAL(triggered()), this, SLOT(help()));
 	connect(ui.action_Version, SIGNAL(triggered()), this, SLOT(about()));
 
 	connect(ui.DecryptEncryptButton, SIGNAL(clicked()), this, SLOT(encryptDecryptFile()));	
@@ -1015,6 +1015,17 @@ void ImageVaultGUI::about() {
 		tr("<p>Version 1.0</p>"
 			"<p>Developed by Mike Livesey and Joanna Kus for "
 			"Elmhurst College CS 475, Spring 2020.</p>"));
+}
+
+void ImageVaultGUI::help()
+{
+	QMessageBox::about(this, tr("ImageVault Help"),
+		tr("<p>Save: You must type your desired file extension to save.</p>"
+			"<p>Note: Do not save files as .jpeg or encryption will be lost.</P>"
+			"<p>Load: Select an image file to open.</p>"
+			"<p>LSB: Least significant bit encoding is the least secure method.</p>"
+			"<p>Vigenere: Is a more secure ciper method of encryption. A password is required.</p>"
+			"<p>Vigenere 3 pass: Is vigenere run three consecutive passes over the text.</p>"));
 }
 
 void ImageVaultGUI::test() {
