@@ -270,7 +270,7 @@ void ImageVaultGUI::encryptDecryptFile()
 	ui.DecryptProgress->setValue(0);
 
 	// Delimiter
-	// Needs to be more complex...
+	// TODO: Needs to be more complex...
 	passkey.append(' ');
 
 	// Call the correct function
@@ -294,6 +294,69 @@ void ImageVaultGUI::encryptDecryptFile()
 
 	ui.DecryptEncryptButton->setEnabled(true);	// Reenable encrypt/decrypt button
 	// ui.DecryptEncryptButton->setGraphicsEffect(ui.ButtonGlow);
+}
+
+// Uses vigenère cipher techniques to scramble the original message
+void ImageVaultGUI::vigenereEncrypt(QString passkey) {
+	int passLength = passkey.size();
+
+	for (int i = 0; i < userText.size(); i++) {
+		char16_t tempChar = userText[i].unicode();
+
+		tempChar += passkey[i % passLength].unicode() - 32;
+		tempChar = (tempChar - 32) % 256 + 32;	// Limits unicode to values 32 - 287
+
+		userText[i] = tempChar;
+	}
+}
+
+// Uses the passkey to decrypt the decoded text with a vigenère cipher
+void ImageVaultGUI::vigenereDecrypt(QString passkey) {
+	// Should overflow back to 32 >= when it hits 288. 287 is the maximum valid value.
+	int passLength = passkey.size();
+
+	for (int i = 0; i < userText.size(); i++) {
+		char16_t tempChar = userText[i].unicode();
+
+		tempChar -= passkey[i % passLength].unicode() + 32;
+		tempChar = (tempChar + 32) % 256 + 32;	// Limits unicode to values 32 - 287
+
+		userText[i] = tempChar;
+	}
+}
+
+// Uses the passkey to encrypt the text with three layers of a vigenère cipher
+void ImageVaultGUI::triVigEncrypt(QString passkey) {
+	// Run vig encryption once
+	vigenereEncrypt(passkey);
+	
+	// Run second layer of vig encryption
+	QString passkeyOffset = passkey.left(ceil(passkey.size() / 3));	// Gets first third (rounded up) of passkey characters
+	QString shiftedPasskey = passkeyOffset + passkey;	// Offset passkey by a third of its characters
+	vigenereEncrypt(shiftedPasskey);
+
+	// Run third layer of vig encryption
+	passkeyOffset = passkey.left(ceil(passkey.size() / 2)); // Gets first half (rounded up) of passkey characters
+	shiftedPasskey = passkeyOffset + passkey;
+	vigenereEncrypt(shiftedPasskey);
+}
+
+// Uses the passkey to decrypt the text with three layers of a vigenère cipher
+// Only works on an image that was encrypted with the triVigEncrypt function
+void ImageVaultGUI::triVigDecrypt(QString passkey) {
+	QString passkeyOffset1 = passkey.left(ceil(passkey.size() / 2));
+	QString passkeyOffset2 = passkey.left(ceil(passkey.size() / 3));
+
+	// Reverse third layer of vig encryption
+	QString shiftedPasskey = passkeyOffset1 + passkeyOffset2 + passkey;
+	vigenereDecrypt(shiftedPasskey);
+
+	// Reverse second layer of vig encryption
+	shiftedPasskey = passkeyOffset2 + passkey;
+	vigenereDecrypt(shiftedPasskey);
+
+	// Reverse first layer of vig encryption
+	vigenereDecrypt(passkey);
 }
 
 void ImageVaultGUI::encryptFile()
@@ -335,8 +398,8 @@ void ImageVaultGUI::encryptFile()
 	unsigned char tempPixel;
 	unsigned char modPixel;
 
-	char tempChar;
-	char modChar;
+	char16_t tempChar;
+	char16_t modChar;
 
 	// Get a pointer to the raw pixel data
 	// Note: Not really a pointer to the original pixel data
@@ -623,7 +686,7 @@ void ImageVaultGUI::decryptFile()
 		unsigned char tempPixel;
 		unsigned char modPixel;
 
-		char modChar = ' ';
+		char16_t modChar = u' ';
 
 		// Zero out this character
 		modChar = (modChar & 0b00000000);

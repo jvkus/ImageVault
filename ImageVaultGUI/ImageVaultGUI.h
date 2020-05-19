@@ -39,12 +39,16 @@ private:
 	QString userText;	// Used to hold user input text
 	bool decrypt;	// Used for which mode is selected (false for encrypt, true for decrypt)
 
-	enum encryptType {leastSignificantBits};	// Enum to control encrypt method
+	enum encryptType {leastSignificantBits, vigenere, tripleVigenere};	// Enum to control encrypt method
 	encryptType method = leastSignificantBits;	// Variable to store selected method type, set to default
 	QString passkey;	// Holds the passkey, if one exists
 	QImage encryptedImage;	// Image to be modified
 	QString decodedText;	// Text 
 
+	void vigenereEncrypt(QString passkey);
+	void vigenereDecrypt(QString passkey);
+	void triVigEncrypt(QString passkey);
+	void triVigDecrypt(QString passkey);
 	void encryptFile();
 	void decryptFile();
 	void showText();
