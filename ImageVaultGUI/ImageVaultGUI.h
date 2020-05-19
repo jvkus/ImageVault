@@ -40,7 +40,7 @@ private:
 	bool decrypt;	// Used for which mode is selected (false for encrypt, true for decrypt)
 
 	enum encryptType {leastSignificantBits, vigenere, tripleVigenere};	// Enum to control encrypt method
-	encryptType method = leastSignificantBits;	// Variable to store selected method type, set to default
+	encryptType method = leastSignificantBits;	// Variable to store selected method type, with default value
 	QString passkey;	// Holds the passkey, if one exists
 	QImage encryptedImage;	// Image to be modified
 	QString decodedText;	// Text 
@@ -52,6 +52,7 @@ private:
 	void encryptFile();
 	void decryptFile();
 	void showText();
+	void selectMode();
 
 	void showPreview(const QImage &imageName);
 	void loadPreview(const QString &fileName);

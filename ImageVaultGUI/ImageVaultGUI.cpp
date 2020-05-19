@@ -19,6 +19,7 @@ ImageVaultGUI::ImageVaultGUI(QWidget *parent)
 	// TODO: Currently, these actions don't exist in the actual UI. Get some buttons going.
 	// connect(ui.action_Zoom_In, SIGNAL(triggered()), this, SLOT(zoomIn()));
 	// connect(ui.action_Zoom_Out, SIGNAL(triggered()), this, SLOT(zoomOut()));
+
 }
 
 // Made with reference to https://stackoverflow.com/questions/17191124/qdialog-with-ok-and-cancel-buttons
@@ -261,6 +262,9 @@ void ImageVaultGUI::encryptDecryptFile()
 		return;
 	}
 
+	// Find which method to use
+	selectMode();
+
 	// Get the passkey
 	// Will attempt operation even if field is blank
 	passkey = ui.EncryptionKey->text();
@@ -271,7 +275,10 @@ void ImageVaultGUI::encryptDecryptFile()
 
 	// Delimiter
 	// TODO: Needs to be more complex...
-	passkey.append(' ');
+	if (!(ui.EncryptionKey->text().isEmpty()))
+	{
+		passkey.append(' ');
+	}
 
 	// Call the correct function
 	if (decrypt)
@@ -315,13 +322,13 @@ void ImageVaultGUI::vigenereDecrypt(QString passkey) {
 	// Should overflow back to 32 >= when it hits 288. 287 is the maximum valid value.
 	int passLength = passkey.size();
 
-	for (int i = 0; i < userText.size(); i++) {
-		char16_t tempChar = userText[i].unicode();
+	for (int i = 0; i < decodedText.size(); i++) {
+		char16_t tempChar = decodedText[i].unicode();
 
 		tempChar -= passkey[i % passLength].unicode() + 32;
 		tempChar = (tempChar + 32) % 256 + 32;	// Limits unicode to values 32 - 287
 
-		userText[i] = tempChar;
+		decodedText[i] = tempChar;
 	}
 }
 
@@ -361,7 +368,7 @@ void ImageVaultGUI::triVigDecrypt(QString passkey) {
 
 void ImageVaultGUI::encryptFile()
 {
-	if (passkey.isEmpty())
+	if (passkey.isEmpty() && method == leastSignificantBits)
 	{
 		QMessageBox::warning(this, tr("Warning"), "This image will be encrypted without a passkey.");
 	}
@@ -377,6 +384,22 @@ void ImageVaultGUI::encryptFile()
 	int height = image.height();
 	int bytesPerLine = image.bytesPerLine();
 	int sizeInBytes = image.sizeInBytes();
+
+	if (passkey.isEmpty() && method != leastSignificantBits)
+	{
+		QMessageBox::warning(this, tr("Warning"), "Passkey Required.");
+		return;
+	}
+
+	if (method == vigenere)
+	{
+		vigenereEncrypt(passkey);
+	}
+
+	if (method == tripleVigenere)
+	{
+		triVigEncrypt(passkey);
+	}
 	
 
 	int passkeyLength = passkey.size();
@@ -407,9 +430,8 @@ void ImageVaultGUI::encryptFile()
 	// produces a pointer to the copy
 	uchar * data = image.bits();
 
-	// This is where the method of encryption is determined
-	// Case statment would be better
-	if (method == leastSignificantBits)
+	// All use the same encoder
+	if (method == leastSignificantBits || method == vigenere || method == tripleVigenere)
 	{
 		// Insert header
 		// 1323 = Encrypted no passkey
@@ -477,7 +499,8 @@ void ImageVaultGUI::encryptFile()
 		ui.DecryptProgress->setValue(15);
 
 		// Insert passkey
-		if (passKeyUsed)
+		// Do not insert the passkey for other methods
+		if (passKeyUsed && method == leastSignificantBits)
 		{
 			// Will need 4x as many pixels as the number of char
 			for (i; i < (passkeyLength * 4) + 4; i++)
@@ -532,6 +555,12 @@ void ImageVaultGUI::encryptFile()
 		}
 
 		ui.DecryptProgress->setValue(35);
+
+		// Correct offset change if passkey not inserted
+		if (method == vigenere || method == tripleVigenere)
+		{
+			passkeyLength = 0;
+		}
 
 		// Insert the main message
 		// Make sure to run all the way through the message
@@ -651,6 +680,11 @@ void ImageVaultGUI::encryptFile()
 
 		
 	}
+	else
+	{
+		QMessageBox::warning(this, tr("Warning"), "Fault in encoder method selector.");
+		return;
+	}
 
 	// Assemble the new data into an image
 	QImage tempImage(data, width, height, bytesPerLine, QImage::Format_RGB32);
@@ -663,8 +697,14 @@ void ImageVaultGUI::encryptFile()
 
 void ImageVaultGUI::decryptFile()
 {
-	if (method == leastSignificantBits)
+	if (method == leastSignificantBits || method == vigenere || method == tripleVigenere)
 	{
+		if (passkey.isEmpty() && method != leastSignificantBits)
+		{
+			QMessageBox::warning(this, tr("Warning"), "Passkey Required.");
+			return;
+		}
+
 		// Ensure the pixel layout is known
 		// Auto set Alpha to max to prevent conversion problems later
 		image.convertToFormat(QImage::Format_RGB32);
@@ -758,68 +798,72 @@ void ImageVaultGUI::decryptFile()
 
 		int passkeyLength = passkey.size();
 
-		// Check if the user entered an unnecessary passkey
-		if (passkeyLength > 0 && !(passKeyUsed))
+		// The passkey is not in the header in other methods
+		if (method == leastSignificantBits)
 		{
-			QMessageBox::warning(this, tr("Warning"), "This file does not have passkey protection.");
-		}
-
-
-		// Decode and check the passkey if necessary
-		if (passKeyUsed)
-		{
-			// Delimits end of password
-			bool STOP = false;
-
-			// Will need 4x as many pixels as the number of char
-			for (i; !(STOP) && (i < (passkeyLength * 4) + 4); i++)
+			// Check if the user entered an unnecessary passkey
+			if (passkeyLength > 0 && !(passKeyUsed))
 			{
-				tempPixel = data[(i * pixelWidth) + blue];
+				QMessageBox::warning(this, tr("Warning"), "This file does not have passkey protection.");
+			}
 
-				modPixel = (tempPixel & 0b00000011);
 
+			// Decode and check the passkey if necessary
+			if (passKeyUsed)
+			{
+				// Delimits end of password
+				bool STOP = false;
 
-				if (i % 4 == 0)
+				// Will need 4x as many pixels as the number of char
+				for (i; !(STOP) && (i < (passkeyLength * 4) + 4); i++)
 				{
-					modChar += (modPixel << 6);
+					tempPixel = data[(i * pixelWidth) + blue];
+
+					modPixel = (tempPixel & 0b00000011);
+
+
+					if (i % 4 == 0)
+					{
+						modChar += (modPixel << 6);
+					}
+					else if (i % 4 == 1)
+					{
+						modChar += (modPixel << 4);
+					}
+					else if (i % 4 == 2)
+					{
+						modChar += (modPixel << 2);
+					}
+					else
+					{
+						modChar += modPixel;
+
+						if (modChar == ' ')
+						{
+							STOP = true;
+						}
+
+						// Push the char onto a string
+						decodedWord.append(modChar);
+
+						// Reset the character
+						modChar = (modChar & 0b00000000);
+					}
+
 				}
-				else if (i % 4 == 1)
+
+				if (decodedWord != passkey || decodedWord.isEmpty() || !(STOP))
 				{
-					modChar += (modPixel << 4);
-				}
-				else if (i % 4 == 2)
-				{
-					modChar += (modPixel << 2);
+					QMessageBox::warning(this, tr("Error"), "Passkey does not match.");
+					return;
 				}
 				else
 				{
-					modChar += modPixel;
-
-					if (modChar == ' ')
-					{
-						STOP = true;
-					}
-
-					// Push the char onto a string
-					decodedWord.append(modChar);
-
-					// Reset the character
-					modChar = (modChar & 0b00000000);
+					// Reset the word to decode text
+					decodedWord.clear();
 				}
 
 			}
-
-			if (decodedWord != passkey || decodedWord.isEmpty() || !(STOP))
-			{
-				QMessageBox::warning(this, tr("Error"), "Passkey does not match.");
-				return;
-			}
-			else
-			{
-				// Reset the word to decode text
-				decodedWord.clear();
-			}
-
 		}
 
 		ui.DecryptProgress->setValue(50);
@@ -884,12 +928,36 @@ void ImageVaultGUI::decryptFile()
 
 		}
 
+
 		// Make the text available to the program
-		decodedText = decodedMessage;
+		if (method == leastSignificantBits)
+		{
+			decodedText = decodedMessage;
+		}
+		else if (method == vigenere)
+		{
+			decodedText = decodedMessage;
+			vigenereDecrypt(passkey);
+		}
+		else if (method == tripleVigenere)
+		{
+			decodedText = decodedMessage;
+			triVigDecrypt(passkey);
+		}
+		else
+		{
+			QMessageBox::warning(this, tr("Warning"), "Fault in decoder selector.");
+			return;
+		}
 
 		ui.DecryptProgress->setValue(100);
 
 		showText();
+	}
+	else
+	{
+		QMessageBox::warning(this, tr("Warning"), "Fault in decode method selector.");
+		return;
 	}
 	
 }
@@ -951,4 +1019,27 @@ void ImageVaultGUI::about() {
 
 void ImageVaultGUI::test() {
 	
+}
+
+void ImageVaultGUI::selectMode()
+{
+	int temp;
+	encryptType mode;
+
+	temp = ui.comboBox->currentIndex();
+
+	if (temp == 0)
+	{
+		mode = leastSignificantBits;
+	}
+	else if (temp == 1)
+	{
+		mode = vigenere;
+	}
+	else if (temp == 2)
+	{
+		mode = tripleVigenere;
+	}
+
+	method = mode;
 }

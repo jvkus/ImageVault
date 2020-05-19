@@ -556,6 +556,10 @@ public:
         comboBox->setSizePolicy(sizePolicy3);
         comboBox->setMaximumSize(QSize(300, 16777215));
         comboBox->setFont(keyFont);
+		comboBox->insertItem(0, "LSB", 0);
+		comboBox->insertItem(1, "Vigenere", 1);
+		comboBox->insertItem(2, "Vigenere 3 Pass", 2);
+		comboBox->setCurrentIndex(0);
         comboBox->setEditable(false);
 
         verticalLayout->addWidget(comboBox);

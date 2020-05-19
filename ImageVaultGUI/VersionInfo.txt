@@ -4,6 +4,8 @@ General encryption algorithm for least significant 2bits has been built.
 
 Basic encryption / Decryption complete
 Basic progress bar complete
+Integration of new encryption to encoder
+Completed mode selector box
 
 // Manual test operations
 **************************************************
@@ -13,14 +15,14 @@ File formt .PNG tests PASSED
 All warnings test PASSED
 General save test FAILED
 General load test PASSED
+Vig 1 pass tests PASSED
+Vig 3 pass tests FAILED
 **************************************************
 
 // In progress
 Needs:
-Repair to save and load functions
-Implement the encryption method selector
 Help button actions
+Repair Vig 3 pass function
 
 Could add:
-Better functions for encryption
 Better output box for text data
