@@ -344,7 +344,7 @@ void ImageVaultGUI::triVigEncrypt(QString passkey) {
 
 	// Run third layer of vig encryption
 	passkeyOffset = passkey.left(ceil(passkey.size() / 2)); // Gets first half (rounded up) of passkey characters
-	shiftedPasskey = passkeyOffset + passkey;
+	shiftedPasskey = passkeyOffset + shiftedPasskey;
 	vigenereEncrypt(shiftedPasskey);
 }
 
