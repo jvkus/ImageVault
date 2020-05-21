@@ -291,6 +291,7 @@ void ImageVaultGUI::encryptDecryptFile()
 		{
 			// Check for user input first
 			QMessageBox::information(this, tr("Error"), "Please enter text to encrypt.");
+			ui.DecryptEncryptButton->setEnabled(true);
 			return;
 		}
 		else
