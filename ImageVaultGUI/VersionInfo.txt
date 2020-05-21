@@ -1,28 +1,34 @@
 // Status Update
+Operational Prototype
 
-General encryption algorithm for least significant 2bits has been built.
-
-Basic encryption / Decryption complete
-Basic progress bar complete
-Integration of new encryption to encoder
-Completed mode selector box
 
 // Manual test operations
 **************************************************
 Password protection tests PASSED
 No password protection tests PASSED
 File formt .PNG tests PASSED
+File formt .BMP tests PASSED
 All warnings test PASSED
 General save test FAILED
 General load test PASSED
 Vig 1 pass tests PASSED
-Vig 3 pass tests FAILED
+Vig 3 pass tests PASSED
 **************************************************
 
 // In progress
 Needs:
-Help button actions
-Repair Vig 3 pass function
+Save As: needs to have a proper selection box for selecting output file types. Jpeg should be blocked.
+
+Scaling for image needs to be replaced, the current image does not scale correctly.
+
+Save: needs to be modified so it does not replace the input file. Should only be allowed with new output file. 
+
 
 Could add:
-Better output box for text data
+Better output box for text data.
+
+Better encoding scheme.
+
+Pop up box prompting save when encoding complete.
+
+Better progress bar.
